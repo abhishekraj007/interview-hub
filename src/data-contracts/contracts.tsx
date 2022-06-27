@@ -1,5 +1,3 @@
-import { IndexPath } from "@ui-kitten/components";
-
 export interface Question {
   id?: string;
   title: string;
@@ -35,32 +33,9 @@ export enum SidebarItem {
   ALL_FAVORITES = "ALL_FAVORITES",
 }
 
-export const getCategory = (indexPath: IndexPath) => {
-  if (indexPath.row === 1 && indexPath.section === 0) {
-    return SidebarItem.JAVASCRIPT_FAVORITE;
-  } else if (
-    indexPath.row === 0 &&
-    (indexPath.section === 0 || indexPath.section === undefined)
-  ) {
+export const getCategory = (category: string) => {
+  if (category) {
     return SidebarItem.JAVASCRIPT;
-  } else if (
-    (indexPath.row === 1 &&
-      (indexPath.section === 0 || indexPath.section === undefined)) ||
-    (indexPath.row === 0 && indexPath.section === 1)
-  ) {
-    return SidebarItem.REACT;
-  } else if (indexPath.row === 1 && indexPath.section === 1) {
-    return SidebarItem.REACT_FAVORITE;
-  } else if (
-    (indexPath.row === 2 &&
-      (indexPath.section === 0 || indexPath.section === undefined)) ||
-    (indexPath.row === 0 && indexPath.section === 2)
-  ) {
-    return SidebarItem.NOTES;
-  } else if (indexPath.row === 1 && indexPath.section === 2) {
-    return SidebarItem.NOTES_FAVORITE;
-  } else if (indexPath.row === 3 && indexPath.section === undefined) {
-    return SidebarItem.ALL_FAVORITES;
   }
 };
 
