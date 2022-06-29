@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@tinymce/tinymce-react": "^4.1.0",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
     "antd": "^4.21.3",
@@ -24,6 +25,7 @@
     "react-dom": "18.2.0",
     "slate": "^0.81.1",
     "slate-history": "^0.66.0",
+    "slate-hyperscript": "^0.77.0",
     "slate-react": "^0.81.0",
     "uuid": "^8.3.2"
   },

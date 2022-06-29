@@ -1,13 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { v4 as uuid } from "uuid";
 import { apiUpdateUser } from "../../apis";
 import { Question } from "../../data-contracts/contracts";
 import { Button, Col, Drawer, Form, Input, Layout, Row } from "antd";
 import { StoreContext } from "../../stores";
-import Editor from "../Editor/Editor";
-import { Content } from "antd/lib/layout/layout";
-import RichTextEditor from "../Editor/Editor";
+import TinyEditor from "../Editor/TinyEditor";
 
 const CreateNoteModal = observer(() => {
   const {
@@ -19,17 +17,19 @@ const CreateNoteModal = observer(() => {
   const { showNoteModal, setShowNoteModal } = notesStore;
   const { setNotes, notes } = questionStore;
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [isMakingCall, setIsMakingCall] = useState(false);
 
-  const onAddNote = async () => {
+  const editorRef = useRef(null);
+
+  const onAddNote = async (content) => {
     const item: Question = {
       bookmarked: false,
       title,
-      content: [description],
+      content,
       id: uuid(),
       type: "NOTES",
     };
+    console.log(item);
 
     const { data = [] } = notes;
 
@@ -44,7 +44,6 @@ const CreateNoteModal = observer(() => {
       });
       setShowNoteModal(false);
       setTitle("");
-      setDescription("");
     } catch (error) {
       console.log(error);
     } finally {
@@ -52,8 +51,17 @@ const CreateNoteModal = observer(() => {
     }
   };
 
+  useEffect(() => {
+    setTitle("");
+  }, []);
+
   const closeModal = () => {
     setShowNoteModal(false);
+  };
+
+  const onSubmit = () => {
+    const content = editorRef?.current.getValue();
+    onAddNote(content);
   };
 
   return (
@@ -66,30 +74,32 @@ const CreateNoteModal = observer(() => {
       bodyStyle={{ paddingBottom: 80 }}
       extra={<Button onClick={closeModal}>Cancel</Button>}
     >
-      <Form layout="vertical" hideRequiredMark>
-        <Row gutter={16}>
+      <Form layout="vertical" hideRequiredMark onSubmitCapture={onSubmit}>
+        <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col span={24}>
             <Form.Item
               name="title"
               label="Title"
               rules={[{ required: true, message: "Please enter title" }]}
             >
-              <Input size="large" placeholder="Please enter user name" />
+              <Input
+                size="large"
+                placeholder="Title"
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={24} style={{ border: "1px solid" }}>
-            <Form.Item
-              name="description"
-              label="Description"
-              rules={[{ required: true, message: "Please enter description" }]}
-            >
-              <RichTextEditor />
+          <Col span={24}>
+            <Form.Item>
+              <TinyEditor initialValue={""} ref={editorRef} />
             </Form.Item>
           </Col>
         </Row>
-        <Button type="primary">Submit</Button>
+        <Button size="large" type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form>
     </Drawer>
   );
