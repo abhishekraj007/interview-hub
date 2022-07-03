@@ -1,18 +1,24 @@
 import {
   GoogleOutlined,
+  MoreOutlined,
   PicCenterOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Divider, Dropdown, Menu, PageHeader } from "antd";
+import { Button, Dropdown, Menu, PageHeader, Typography } from "antd";
 import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { StoreContext } from "../stores";
+import { useDevices } from "../hooks/useDevices";
 
 export const Header = observer(() => {
   const {
     authStore: { setShowLoginModal, isLoggedIn, user, logout },
-    notesStore: { showNoteModal, setShowNoteModal },
+    notesStore: { setShowNoteModal, setShowReplEditor },
   } = useContext(StoreContext);
+
+  const isItMobile = useDevices();
+
+  console.log(isItMobile);
 
   const handleMenuClick = (item) => {
     console.log(item);
@@ -51,8 +57,6 @@ export const Header = observer(() => {
     );
   }
 
-  const createNoteButton = () => {};
-
   if (isLoggedIn) {
     rightSideMenu.push(
       <Button
@@ -63,7 +67,18 @@ export const Header = observer(() => {
       >
         New Note
       </Button>,
-      <Dropdown.Button key="user-menu" overlay={menu}></Dropdown.Button>
+      <Button
+        onClick={() => setShowReplEditor(true)}
+        type="dashed"
+        key="open-rept-editor"
+      >
+        Editor
+      </Button>,
+      <Dropdown.Button
+        key="user-menu"
+        icon={<MoreOutlined />}
+        overlay={menu}
+      ></Dropdown.Button>
     );
   }
 
@@ -71,12 +86,25 @@ export const Header = observer(() => {
     <div>
       <PageHeader
         ghost={false}
-        title={[
-          <Button key="1">
-            <PicCenterOutlined />
-          </Button>,
-        ]}
-        subTitle="Intreview Hub"
+        title={
+          isItMobile
+            ? [
+                <Button key="1">
+                  <PicCenterOutlined />
+                </Button>,
+              ]
+            : null
+        }
+        subTitle={
+          <Typography.Title
+            style={{
+              marginBottom: 0,
+            }}
+            level={5}
+          >
+            Dashboard
+          </Typography.Title>
+        }
         extra={rightSideMenu}
       ></PageHeader>
     </div>

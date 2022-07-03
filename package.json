@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "theme": "npx @emeks/antd-custom-theme-generator -w --theme dark ./src/styles/my-theme.less ./src/styles/my-theme.css"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -23,10 +24,6 @@
     "next-plugin-antd-less": "^1.8.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "slate": "^0.81.1",
-    "slate-history": "^0.66.0",
-    "slate-hyperscript": "^0.77.0",
-    "slate-react": "^0.81.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

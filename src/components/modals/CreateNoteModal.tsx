@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { v4 as uuid } from "uuid";
 import { apiUpdateUser } from "../../apis";
 import { Question } from "../../data-contracts/contracts";
-import { Button, Col, Drawer, Form, Input, Layout, Row } from "antd";
+import { Button, Col, Drawer, Form, Input, message, Row } from "antd";
 import { StoreContext } from "../../stores";
 import TinyEditor from "../Editor/TinyEditor";
 
@@ -42,8 +42,9 @@ const CreateNoteModal = observer(() => {
         ...notes,
         data: newNotes,
       });
-      setShowNoteModal(false);
+      message.success("Note created successfully!");
       setTitle("");
+      setShowNoteModal(false);
     } catch (error) {
       console.log(error);
     } finally {
@@ -97,7 +98,12 @@ const CreateNoteModal = observer(() => {
             </Form.Item>
           </Col>
         </Row>
-        <Button size="large" type="primary" htmlType="submit">
+        <Button
+          loading={isMakingCall}
+          size="large"
+          type="primary"
+          htmlType="submit"
+        >
           Submit
         </Button>
       </Form>

@@ -1,31 +1,43 @@
-import React, { useContext, useEffect, useState } from "react";
-import { apiGetQuestions, apiUpdateQuestions, apiUpdateUser } from "../apis";
+import React, { useContext, useEffect } from "react";
 import { Header } from "../components/Header";
-import QList from "../components/QList";
-import { getSide } from "../utils";
 import { observer } from "mobx-react-lite";
 import { StoreContext } from "../stores";
 import LoginModal from "../components/modals/LoginModal";
-import { Button } from "antd";
 import CreateNoteModal from "../components/modals/CreateNoteModal";
+import ReplEditor from "../components/modals/ReplEditor";
+import { Layout } from "antd";
+import Sidebar from "../components/Sidebar";
+import { useDevices } from "../hooks/useDevices";
+import { QuestionContainer } from "../components/QuestionContainer";
 
 function Dashboard() {
   const store = useContext(StoreContext);
   const {
-    authStore: { checkUserLoggedInStatus, user },
+    authStore: { checkUserLoggedInStatus },
   } = store;
+
+  const isItMobile = useDevices();
 
   useEffect(() => {
     checkUserLoggedInStatus();
   }, []);
 
   return (
-    <div>
+    <Layout
+      style={{
+        height: isItMobile ? "100vh" : "100%",
+      }}
+    >
       <Header />
-      {/* <QList /> */}
+      <Layout>
+        <Sidebar />
+        <QuestionContainer />
+      </Layout>
+
       <LoginModal />
       <CreateNoteModal />
-    </div>
+      <ReplEditor />
+    </Layout>
   );
 }
 

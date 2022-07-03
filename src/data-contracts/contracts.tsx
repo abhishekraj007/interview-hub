@@ -25,10 +25,13 @@ export const questionCategoriesList = ["javascript", "react", "notes"];
 
 export enum SidebarItem {
   JAVASCRIPT = "JAVASCRIPT",
+  JAVASCRIPT_ALL = "JAVASCRIPT_ALL",
   JAVASCRIPT_FAVORITE = "JAVASCRIPT_FAVORITE",
   REACT = "REACT",
+  REACT_ALL = "REACT_ALL",
   REACT_FAVORITE = "REACT_FAVORITE",
   NOTES = "NOTES",
+  NOTES_ALL = "NOTES_ALL",
   NOTES_FAVORITE = "NOTES_FAVORITE",
   ALL_FAVORITES = "ALL_FAVORITES",
 }

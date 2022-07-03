@@ -7038,7 +7038,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   position: relative;
   z-index: 1;
   overflow: auto;
-  background-color: #0b154b;
+  background-color: #1b2333;
   background-clip: padding-box;
   border: 0;
 }
@@ -7072,7 +7072,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   justify-content: space-between;
   padding: 16px 24px;
   color: #ffffff;
-  background: #0b154b;
+  background: #1b2333;
   border-bottom: 1px solid #1f1f1f;
   border-radius: 2px 2px 0 0;
 }

@@ -1,11 +1,10 @@
-import { ConfigProvider } from "antd";
-import type { NextPage } from "next";
-import { apiGetQuestions } from "../src/apis";
+import { ConfigProvider, Layout } from "antd";
 import Dashboard from "../src/screens/Dashboard";
 import { getSide } from "../src/utils";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { StoreContext } from "../src/stores";
+import Head from "next/head";
 
 const Home = (props) => {
   const store = useContext(StoreContext);
@@ -13,9 +12,15 @@ const Home = (props) => {
   console.log("called from Home => ", store, getSide());
 
   return (
-    <ConfigProvider>
-      <Dashboard />
-    </ConfigProvider>
+    <Layout>
+      <Head>
+        <title>Dashboard</title>
+        {/* Meta tags */}
+      </Head>
+      <ConfigProvider>
+        <Dashboard />
+      </ConfigProvider>
+    </Layout>
   );
 };
 

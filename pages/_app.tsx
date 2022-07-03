@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import { StoreContext, useStore } from "../src/stores";
-// import "~antd/dist/antd.dark.min.css";
+// import "~antd/dist/antd.min.css";
+// import "antd/dist/antd.css";
 import "../src/styles/my-theme.css";
 
 function MyApp({ Component, pageProps }: AppProps) {

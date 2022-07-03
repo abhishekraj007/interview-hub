@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
+  memo,
 } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
@@ -12,8 +13,6 @@ export interface EditorProps {
 }
 
 const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
-  console.log(ref);
-
   useImperativeHandle(ref, () => {
     return {
       getValue: () => {
@@ -23,20 +22,9 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
   });
 
   const editorRef = useRef(null);
-  const [dirty, setDirty] = useState(false);
+  const [_, setDirty] = useState(false);
 
   useEffect(() => setDirty(false), [initialValue]);
-
-  const onChange = () => {
-    if (editorRef.current) {
-      const content = editorRef.current.getContent();
-      setDirty(false);
-      editorRef.current.setDirty(false);
-      // an application would save the editor content to the server here
-
-      console.log(content);
-    }
-  };
 
   return (
     <Editor
@@ -46,14 +34,27 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
         menubar: false,
         plugins: "lists codesample",
         toolbar:
-          "h1 h2 h3 bold italic underline codesample numlist bullist blockquote",
+          "h1 h2 h3 paragraph bold italic underline codesample numlist bullist blockquote",
         width: "100%",
         codesample_global_prismjs: true,
+        codesample_languages: [
+          { text: "JavaScript", value: "javascript" },
+          { text: "TypeScript", value: "typescript" },
+          { text: "HTML", value: "markup" },
+          { text: "Java", value: "java" },
+          { text: "CSS", value: "css" },
+          { text: "PHP", value: "php" },
+          { text: "Ruby", value: "ruby" },
+          { text: "Python", value: "python" },
+          { text: "C", value: "c" },
+          { text: "C#", value: "csharp" },
+          { text: "C++", value: "cpp" },
+        ],
       }}
-      onInit={(evt, editor) => (editorRef.current = editor)}
+      onInit={(_, editor) => (editorRef.current = editor)}
       onDirty={() => setDirty(true)}
     />
   );
 });
 
-export default TinyEditor;
+export default memo(TinyEditor);
