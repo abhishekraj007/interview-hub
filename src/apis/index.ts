@@ -73,6 +73,7 @@ export const apiAddUser = async (payload: User) => {
 
 // Update User
 export const apiUpdateUser = async (userId: string, payload: any) => {
+  console.log(userId, db);
   const userRef = doc(db, "users", userId);
 
   try {

@@ -1,7 +1,13 @@
-@import '~antd/dist/antd.dark.min.css';
+/* @import '~antd/dist/antd.dark.min.css'; */
 /* @import '~antd/dist/antd.variable.min.css'; */
 /* @import '~antd/dist/antd.variable.min.css'; */
 
-:root {
-    --ant-primary-color: red
+
+/* .tox .tox-edit-area__iframe {
+    background: none !important;
+    color: white !important;
 }
+
+.tox .tox-edit-area__iframe html {
+    color: white !important;
+} */

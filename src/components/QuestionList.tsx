@@ -29,20 +29,27 @@ function QuestionList({
         style={{
           cursor: "pointer",
         }}
-        onClick={() => setSelectedQuestion(item)}
-        actions={[
-          <Button
-            onClick={() => toggleFavorite(item, selectedMenu)}
-            size="small"
-            key="bookmarked"
-            type="link"
-            danger
-          >
-            {item.bookmarked ? <StarFilled /> : <StarOutlined />}
-          </Button>,
-        ]}
+
+        // actions={[,]}
       >
-        {item.title}
+        <span
+          style={{
+            flex: 1,
+          }}
+          onClick={() => setSelectedQuestion(item)}
+        >
+          {item.title}
+        </span>
+
+        <Button
+          onClick={() => toggleFavorite(item, selectedMenu)}
+          size="small"
+          key="bookmarked"
+          type="link"
+          danger
+        >
+          {item.bookmarked ? <StarFilled /> : <StarOutlined />}
+        </Button>
       </List.Item>
     );
   };

@@ -143,7 +143,7 @@ export const QuestionContainer = observer(() => {
                   selectedMenu={selectedMenu}
                   selectedQuestion={selectedQuestion}
                   setSelectedQuestion={setSelectedQuestion}
-                  toggleFavorite={toggleFavorite}
+                  toggleFavorite={onFavToggle}
                 />
               </Col>
               <Col

@@ -3,6 +3,7 @@ import { StoreContext, useStore } from "../src/stores";
 // import "~antd/dist/antd.min.css";
 // import "antd/dist/antd.css";
 import "../src/styles/my-theme.css";
+import "../src/styles/styles.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore(undefined);

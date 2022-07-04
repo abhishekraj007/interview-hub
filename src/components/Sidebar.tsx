@@ -5,6 +5,8 @@ import { useContext, useState } from "react";
 const { Sider } = Layout;
 import { SidebarItem } from "../data-contracts/contracts";
 import { StoreContext } from "../stores";
+import { IoLogoJavascript, IoLogoReact, IoStar, IoBook } from "react-icons/io5";
+import { TbNotes } from "react-icons/tb";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -12,14 +14,19 @@ const items: MenuItem[] = [
   {
     label: "Javascript",
     key: SidebarItem.JAVASCRIPT_ALL,
+    icon: <IoLogoJavascript />,
     children: [
       { label: "All", key: SidebarItem.JAVASCRIPT },
-      { label: "Favorites", key: SidebarItem.JAVASCRIPT_FAVORITE },
+      {
+        label: "Favorites",
+        key: SidebarItem.JAVASCRIPT_FAVORITE,
+      },
     ],
   },
   {
     label: "React",
     key: SidebarItem.REACT_ALL,
+    icon: <IoLogoReact />,
     children: [
       { label: "All", key: SidebarItem.REACT },
       { label: "Favorites", key: SidebarItem.REACT_FAVORITE },
@@ -28,6 +35,7 @@ const items: MenuItem[] = [
   {
     label: "My Notes",
     key: SidebarItem.NOTES_ALL,
+    icon: <TbNotes />,
     children: [
       { label: "All", key: SidebarItem.NOTES },
       { label: "Favorites", key: SidebarItem.NOTES_FAVORITE },

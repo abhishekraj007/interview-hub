@@ -62,7 +62,12 @@ const CreateNoteModal = observer(() => {
 
   const onSubmit = () => {
     const content = editorRef?.current.getValue();
-    onAddNote(content);
+
+    if (title && content) {
+      onAddNote(content);
+    } else {
+      message.error("Can't create empty note!");
+    }
   };
 
   return (
@@ -85,7 +90,7 @@ const CreateNoteModal = observer(() => {
             >
               <Input
                 size="large"
-                placeholder="Title"
+                placeholder="Enter title"
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Item>
@@ -103,6 +108,9 @@ const CreateNoteModal = observer(() => {
           size="large"
           type="primary"
           htmlType="submit"
+          style={{
+            width: "50%",
+          }}
         >
           Submit
         </Button>

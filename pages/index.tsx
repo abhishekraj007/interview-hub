@@ -9,8 +9,6 @@ import Head from "next/head";
 const Home = (props) => {
   const store = useContext(StoreContext);
 
-  console.log("called from Home => ", store, getSide());
-
   return (
     <Layout>
       <Head>

@@ -10,8 +10,8 @@
 // @component-background: #12182e;
 @component-background: #051467;
 @icon-color-hover: fade(@white, 75%);
-@heading-color: #ffffff;
-@text-color: #ffffff;
+@heading-color: #ffffffdb;
+@text-color: #ffffffdb;
 @text-color-secondary: fade(@white, 45%);
 @border-color-base: #6767DA;
 @border-color-split: @popover-background;
@@ -48,9 +48,7 @@
 @tooltip-bg: #434343;
 @popover-bg: @popover-background;
 @modal-header-bg: @popover-background;
-@menu-popup-bg: @popover-background;
-@menu-item-active-bg: @layout-body-background;
-@menu-dark-submenu-bg: @black;
+
 @table-header-bg: #1d1d1d;
 @table-header-sort-bg: #262626;
 @table-body-sort-bg: fade(@white, 1%);
@@ -66,6 +64,8 @@
 @slider-track-background-color: @primary-color;
 @slider-handle-color: @primary-color;
 @skeleton-color: #303030;
+
+
 @alert-success-border-color: @green-3;
 @alert-success-bg-color: @green-1;
 @alert-info-border-color: @blue-3;
@@ -121,3 +121,31 @@
 // @error-color-outline: fade(@error-color, @outline-fade);
 // @error-color-deprecated-bg: color(~`colorPalette('@{error-color}', 1) `);
 // @error-color-deprecated-border: color(~`colorPalette('@{error-color}', 3) `);
+
+// Menu
+// ---
+// @menu-inline-toplevel-item-height: 40px;
+// @menu-item-height: 40px;
+// @menu-item-group-height: @line-height-base;
+// @menu-collapsed-width: 80px;
+@menu-bg: @component-background;
+@menu-popup-bg: @component-background;
+@menu-item-color: @text-color;
+@menu-inline-submenu-bg: @component-background;
+@menu-highlight-color: @primary-color;
+// @menu-highlight-danger-color: @error-color;
+// @menu-item-active-bg: @primary-1;
+@menu-item-active-bg: ~`colorPalette('@{component-background}', 8) `;
+// @menu-item-active-danger-bg: @red-1;
+// @menu-item-active-border-width: 3px;
+// @menu-item-group-title-color: @text-color-secondary;
+// @menu-item-vertical-margin: 4px;
+// @menu-item-font-size: @font-size-base;
+// @menu-item-boundary-margin: 8px;
+// @menu-item-padding-horizontal: 20px;
+// @menu-item-padding: 0 @menu-item-padding-horizontal;
+// @menu-horizontal-line-height: 46px;
+// @menu-icon-margin-right: 10px;
+// @menu-icon-size: @menu-item-font-size;
+// @menu-icon-size-lg: @font-size-lg;
+// @menu-item-group-title-font-size: @menu-item-font-size;

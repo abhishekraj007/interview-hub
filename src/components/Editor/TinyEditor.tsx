@@ -31,6 +31,8 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
       apiKey="0s9hpo84lh3ckoamzm6ulx0prfu1e82rhz7v6bqblw3y9dkb"
       initialValue={initialValue}
       init={{
+        body_class: "tiny_editor",
+        content_css: "dark",
         menubar: false,
         plugins: "lists codesample",
         toolbar:
