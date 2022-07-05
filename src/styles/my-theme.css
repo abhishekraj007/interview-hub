@@ -2248,8 +2248,8 @@ li:last-child .ant-breadcrumb-separator {
   pointer-events: none;
 }
 .ant-btn-lg {
-  height: 40px;
-  padding: 5.6px 15px;
+  height: 54px;
+  padding: 12.6px 15px;
   font-size: 17px;
   border-radius: 2px;
 }
@@ -3414,9 +3414,9 @@ li:last-child .ant-breadcrumb-separator {
   font-size: 17px;
 }
 .ant-btn-icon-only.ant-btn-lg {
-  width: 40px;
-  height: 40px;
-  padding: 4.1px 0;
+  width: 54px;
+  height: 54px;
+  padding: 11.1px 0;
   font-size: 19px;
   border-radius: 2px;
 }
@@ -3450,10 +3450,10 @@ a.ant-btn-icon-only > .anticon {
   border-radius: 32px;
 }
 .ant-btn-round.ant-btn-lg {
-  height: 40px;
-  padding: 5.6px 20px;
+  height: 54px;
+  padding: 12.6px 27px;
   font-size: 17px;
-  border-radius: 40px;
+  border-radius: 54px;
 }
 .ant-btn-round.ant-btn-sm {
   height: 24px;
@@ -3472,7 +3472,7 @@ a.ant-btn-icon-only > .anticon {
   border-radius: 50%;
 }
 .ant-btn-circle.ant-btn-lg {
-  min-width: 40px;
+  min-width: 54px;
   border-radius: 50%;
 }
 .ant-btn-circle.ant-btn-sm {
@@ -4054,7 +4054,7 @@ a.ant-btn-disabled:active > a:only-child::after {
   content: '';
 }
 a.ant-btn-lg {
-  line-height: 38px;
+  line-height: 52px;
 }
 a.ant-btn-sm {
   line-height: 22px;
@@ -20528,18 +20528,18 @@ span.ant-radio + * {
   border-radius: 32px;
 }
 .ant-skeleton-element .ant-skeleton-button-lg {
-  width: 80px;
-  min-width: 80px;
-  height: 40px;
-  line-height: 40px;
+  width: 108px;
+  min-width: 108px;
+  height: 54px;
+  line-height: 54px;
 }
 .ant-skeleton-element .ant-skeleton-button-lg.ant-skeleton-button-circle {
-  width: 40px;
-  min-width: 40px;
+  width: 54px;
+  min-width: 54px;
   border-radius: 50%;
 }
 .ant-skeleton-element .ant-skeleton-button-lg.ant-skeleton-button-round {
-  border-radius: 40px;
+  border-radius: 54px;
 }
 .ant-skeleton-element .ant-skeleton-button-sm {
   width: 48px;

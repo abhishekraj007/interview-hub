@@ -53,11 +53,17 @@ const LoginModal = () => {
       visible={showLoginModal}
       footer={false}
       onCancel={() => setShowLoginModal(false)}
+      bodyStyle={{
+        paddingTop: 50,
+        paddingBottom: 50,
+      }}
     >
       <Button
         loading={isMakingCall}
         onClick={onLogin}
         icon={<GoogleOutlined />}
+        block
+        size="large"
       >
         Login with Google
       </Button>

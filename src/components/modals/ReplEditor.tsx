@@ -29,9 +29,9 @@ const ReplEditor = observer(() => {
       >
         <Title
           style={{
-            marginRight: 16,
+            margin: "0 24px 0 0",
           }}
-          level={5}
+          level={4}
         >
           Playground
         </Title>
