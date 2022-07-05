@@ -16,6 +16,8 @@ function Dashboard() {
     authStore: { checkUserLoggedInStatus },
   } = store;
 
+  console.log("store=>", store);
+
   const isItMobile = useDevices();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function Dashboard() {
       }}
     >
       <Header />
-      <Layout>
+      <Layout className="content-area">
         <Sidebar />
         <QuestionContainer />
       </Layout>

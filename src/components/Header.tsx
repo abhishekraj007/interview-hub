@@ -74,11 +74,9 @@ export const Header = observer(() => {
       >
         Editor
       </Button>,
-      <Dropdown.Button
-        key="user-menu"
-        icon={<MoreOutlined />}
-        overlay={menu}
-      ></Dropdown.Button>
+      <Dropdown key="user-menu" overlay={menu} placement="bottomRight">
+        <Button icon={<MoreOutlined />} />
+      </Dropdown>
     );
   }
 

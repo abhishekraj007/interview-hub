@@ -83,20 +83,6 @@ export const QuestionContainer = observer(() => {
       default:
         setFilteredList(javascript.data);
     }
-
-    // if (selectedMenu === SidebarItem.JAVASCRIPT) {
-    //   setFilteredList(javascript.data);
-    // } else if (selectedMenu === SidebarItem.JAVASCRIPT_FAVORITE) {
-    //   setFilteredList(javascript.favs);
-    // } else if (selectedMenu === SidebarItem.REACT) {
-    //   if (react.data.length) {
-    //     setFilteredList(react.data);
-    //   } else {
-    //     getQuestions(SidebarItem.REACT);
-    //   }
-    // } else if (selectedMenu === SidebarItem.REACT_FAVORITE) {
-    //   setFilteredList(react.favs);
-    // }
   }, [selectedMenu]);
 
   const onSearch = (value: string) => {
@@ -116,7 +102,7 @@ export const QuestionContainer = observer(() => {
               position: "relative",
             }}
           >
-            <Row
+            {/* <Row
               style={{
                 width: "100%",
                 position: "absolute",
@@ -124,19 +110,12 @@ export const QuestionContainer = observer(() => {
                 zIndex: 1,
               }}
             >
-              <Col span={10}>
-                <Search placeholder="Search" onSearch={onSearch} />
-              </Col>
-            </Row>
+            </Row> */}
+            {/* <Col span={10}>
+              <Search placeholder="Search" onSearch={onSearch} />
+            </Col> */}
             <Row>
-              <Col
-                style={{
-                  height: `calc(100vh - 100px)`,
-                  overflow: "auto",
-                  paddingTop: 34,
-                }}
-                span={10}
-              >
+              <Col span={10}>
                 <QuestionList
                   isLoading={isLoading}
                   data={filteredList}
@@ -144,6 +123,7 @@ export const QuestionContainer = observer(() => {
                   selectedQuestion={selectedQuestion}
                   setSelectedQuestion={setSelectedQuestion}
                   toggleFavorite={onFavToggle}
+                  onSearch={onSearch}
                 />
               </Col>
               <Col

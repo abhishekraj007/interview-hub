@@ -36,7 +36,7 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
         menubar: false,
         plugins: "lists codesample",
         toolbar:
-          "h1 h2 h3 paragraph bold italic underline codesample numlist bullist blockquote",
+          "removeformat h1 h2 h3 bold italic underline codesample numlist bullist blockquote",
         width: "100%",
         codesample_global_prismjs: true,
         codesample_languages: [

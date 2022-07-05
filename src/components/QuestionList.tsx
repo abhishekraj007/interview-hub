@@ -1,5 +1,6 @@
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { Button, List } from "antd";
+import Search from "antd/lib/input/Search";
 import React from "react";
 import { Question, SidebarItem } from "../data-contracts/contracts";
 
@@ -14,6 +15,7 @@ interface Props {
   setSelectedQuestion: (item: Question) => void;
   selectedQuestion: Question;
   selectedMenu: SidebarItem;
+  onSearch: (value: string) => void;
 }
 
 function QuestionList({
@@ -22,6 +24,7 @@ function QuestionList({
   setSelectedQuestion,
   toggleFavorite,
   selectedMenu,
+  onSearch,
 }: Props) {
   const renderQuestion = (item: Question) => {
     return (
@@ -29,8 +32,6 @@ function QuestionList({
         style={{
           cursor: "pointer",
         }}
-
-        // actions={[,]}
       >
         <span
           style={{
@@ -55,12 +56,19 @@ function QuestionList({
   };
 
   return (
-    <List
-      // size="large"
-      loading={isLoading}
-      dataSource={data}
-      renderItem={(item) => renderQuestion(item)}
-    />
+    <>
+      <Search placeholder="Search" onSearch={onSearch} />
+      <List
+        style={{
+          height: `calc(100vh - 142px)`,
+          overflow: "auto",
+          marginTop: 10,
+        }}
+        loading={isLoading}
+        dataSource={data}
+        renderItem={(item) => renderQuestion(item)}
+      />
+    </>
   );
 }
 

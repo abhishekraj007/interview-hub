@@ -2,7 +2,6 @@
 /* @import '~antd/dist/antd.variable.min.css'; */
 /* @import '~antd/dist/antd.variable.min.css'; */
 
-
 /* .tox .tox-edit-area__iframe {
     background: none !important;
     color: white !important;
@@ -11,3 +10,18 @@
 .tox .tox-edit-area__iframe html {
     color: white !important;
 } */
+
+pre {
+  background-color: #142c43;
+  box-shadow: 2px 2px 3px 1px rgb(0 0 0 / 40%);
+  color: #fff;
+  padding: 1rem;
+}
+
+.content-area {
+  height: calc(100vh - 80px);
+}
+
+.ant-btn-link {
+  border: none !important;
+}

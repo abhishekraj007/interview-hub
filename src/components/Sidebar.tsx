@@ -1,12 +1,12 @@
-import { FileOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu, MenuProps } from "antd";
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
-const { Sider } = Layout;
 import { SidebarItem } from "../data-contracts/contracts";
 import { StoreContext } from "../stores";
-import { IoLogoJavascript, IoLogoReact, IoStar, IoBook } from "react-icons/io5";
-import { TbNotes } from "react-icons/tb";
+import { IoLogoJavascript } from "@react-icons/all-files/io5/IoLogoJavascript";
+import { IoLogoReact } from "@react-icons/all-files/io5/IoLogoReact";
+import { CgNotes } from "@react-icons/all-files/cg/CgNotes";
+const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -35,7 +35,7 @@ const items: MenuItem[] = [
   {
     label: "My Notes",
     key: SidebarItem.NOTES_ALL,
-    icon: <TbNotes />,
+    icon: <CgNotes />,
     children: [
       { label: "All", key: SidebarItem.NOTES },
       { label: "Favorites", key: SidebarItem.NOTES_FAVORITE },
@@ -48,11 +48,10 @@ const Sidebar = observer(() => {
     menuStore: { setSelectedMenu },
   } = useContext(StoreContext);
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const onMenuSelect = (value) => {
     setSelectedMenu(value.key);
-    console.log(value);
   };
 
   return (
@@ -65,7 +64,7 @@ const Sidebar = observer(() => {
       <Menu
         theme="light"
         defaultSelectedKeys={[SidebarItem.JAVASCRIPT]}
-        defaultOpenKeys={[SidebarItem.JAVASCRIPT_ALL]}
+        // defaultOpenKeys={[SidebarItem.JAVASCRIPT_ALL]}
         style={{ height: "100%", borderRight: 0 }}
         mode="inline"
         items={items}
