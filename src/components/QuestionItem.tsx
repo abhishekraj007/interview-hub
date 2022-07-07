@@ -42,8 +42,14 @@ function QuestionItem({
     }
 
     return (
-      <Collapse accordion>
-        <Panel header={`${index}. ${item.title}`} key={index}>
+      <Collapse accordion bordered={false} ghost expandIconPosition="end">
+        <Panel
+          style={{
+            paddingLeft: 0,
+          }}
+          header={`${index}. ${item.title}`}
+          key={index}
+        >
           <div dangerouslySetInnerHTML={{ __html: html }}></div>
         </Panel>
       </Collapse>
