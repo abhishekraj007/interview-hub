@@ -9,6 +9,7 @@ import { Layout } from "antd";
 import Sidebar from "../components/Sidebar";
 import { useDevices } from "../hooks/useDevices";
 import { QuestionContainer } from "../components/QuestionContainer";
+import SidebarModal from "../components/modals/SidebarModal";
 
 function Dashboard() {
   const store = useContext(StoreContext);
@@ -25,21 +26,24 @@ function Dashboard() {
   }, []);
 
   return (
-    <Layout
-      style={{
-        height: isItMobile ? "100vh" : "100%",
-      }}
-    >
-      <Header />
-      <Layout className="content-area">
-        <Sidebar />
-        <QuestionContainer />
-      </Layout>
+    <>
+      <Layout
+        style={{
+          height: isItMobile ? "100vh" : "100%",
+        }}
+      >
+        <Header />
+        <Layout className="content-area">
+          {!isItMobile && <Sidebar />}
+          <QuestionContainer />
+        </Layout>
 
-      <LoginModal />
-      <CreateNoteModal />
-      <ReplEditor />
-    </Layout>
+        <LoginModal />
+        <CreateNoteModal />
+        <ReplEditor />
+      </Layout>
+      <SidebarModal />
+    </>
   );
 }
 

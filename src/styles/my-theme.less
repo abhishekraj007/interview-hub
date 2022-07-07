@@ -4,7 +4,9 @@
 
 // npx @emeks/antd-custom-theme-generator -w --theme dark ./src/styles/my-theme.less ./src/styles/my-theme.css
 
-@primary-color: #d719cd;
+// @primary-color: #d719cd;
+@primary-color: #f8ce47;
+@secondary-color: #d719cd;
 // @primary-color: #722ed1;
 // @body-background: #0d1124;
 @body-background: #001628;
@@ -193,7 +195,7 @@
 // @btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 
 // @btn-primary-color: #fff;
-// @btn-primary-bg: @primary-color;
+@btn-primary-bg: @secondary-color;
 
 // @btn-default-color: @text-color;
 // @btn-default-bg: @component-background;
@@ -238,3 +240,8 @@
 
 // @btn-link-hover-bg: transparent;
 // @btn-text-hover-bg: rgba(0, 0, 0, 0.018);
+
+// Message
+// ---
+@message-notice-content-padding: 16px 16px;
+@message-notice-content-bg: @component-background;

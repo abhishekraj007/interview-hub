@@ -11,9 +11,11 @@ import { Col, Layout, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import QuestionDetail from "./QuestionDetail";
 import Search from "antd/lib/input/Search";
+import { useDevices } from "../hooks/useDevices";
 
 export const QuestionContainer = observer(() => {
   const store = useContext(StoreContext);
+  const isItMobile = useDevices();
 
   const {
     menuStore: { selectedMenu },
@@ -89,16 +91,23 @@ export const QuestionContainer = observer(() => {
     searchQuestion(value, getCategory(selectedMenu));
   };
 
+  const gap = isItMobile ? 12 : 24;
+
   const renderList = () => {
     return (
       <>
         {/* {isLoading && <Loader />} */}
-        <Layout style={{ padding: "0 24px 24px" }}>
+        <Layout
+          style={{
+            paddingLeft: gap,
+            paddingRight: gap,
+          }}
+        >
           <Content
             className="site-layout-background"
             style={{
-              paddingTop: 24,
-              paddingBottom: 24,
+              paddingTop: gap,
+              paddingBottom: gap,
               position: "relative",
             }}
           >
@@ -115,7 +124,7 @@ export const QuestionContainer = observer(() => {
               <Search placeholder="Search" onSearch={onSearch} />
             </Col> */}
             <Row>
-              <Col span={10}>
+              <Col span={isItMobile ? 24 : 10}>
                 <QuestionList
                   isLoading={isLoading}
                   data={filteredList}
@@ -126,17 +135,20 @@ export const QuestionContainer = observer(() => {
                   onSearch={onSearch}
                 />
               </Col>
-              <Col
-                style={{
-                  height: `calc(100vh - 100px)`,
-                  overflow: "auto",
-                  paddingLeft: 24,
-                  paddingBottom: 24,
-                }}
-                span={14}
-              >
-                <QuestionDetail item={selectedQuestion} />
-              </Col>
+
+              {!isItMobile && (
+                <Col
+                  style={{
+                    height: `calc(100vh - 100px)`,
+                    overflow: "auto",
+                    paddingLeft: 24,
+                    paddingBottom: 24,
+                  }}
+                  span={14}
+                >
+                  <QuestionDetail item={selectedQuestion} />
+                </Col>
+              )}
             </Row>
           </Content>
         </Layout>

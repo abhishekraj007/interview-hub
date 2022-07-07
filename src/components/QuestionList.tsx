@@ -1,8 +1,8 @@
-import { StarFilled, StarOutlined } from "@ant-design/icons";
-import { Button, List } from "antd";
+import { List } from "antd";
 import Search from "antd/lib/input/Search";
 import React from "react";
 import { Question, SidebarItem } from "../data-contracts/contracts";
+import QuestionItem from "./QuestionItem";
 
 interface Props {
   isLoading: boolean;
@@ -22,39 +22,11 @@ function QuestionList({
   isLoading,
   data,
   setSelectedQuestion,
+  selectedQuestion,
   toggleFavorite,
   selectedMenu,
   onSearch,
 }: Props) {
-  const renderQuestion = (item: Question) => {
-    return (
-      <List.Item
-        style={{
-          cursor: "pointer",
-        }}
-      >
-        <span
-          style={{
-            flex: 1,
-          }}
-          onClick={() => setSelectedQuestion(item)}
-        >
-          {item.title}
-        </span>
-
-        <Button
-          onClick={() => toggleFavorite(item, selectedMenu)}
-          size="small"
-          key="bookmarked"
-          type="link"
-          danger
-        >
-          {item.bookmarked ? <StarFilled /> : <StarOutlined />}
-        </Button>
-      </List.Item>
-    );
-  };
-
   return (
     <>
       <Search placeholder="Search" onSearch={onSearch} />
@@ -66,7 +38,16 @@ function QuestionList({
         }}
         loading={isLoading}
         dataSource={data}
-        renderItem={(item) => renderQuestion(item)}
+        renderItem={(item, index) => (
+          <QuestionItem
+            item={item}
+            index={index}
+            selectedMenu={selectedMenu}
+            selectedQuestion={selectedQuestion}
+            setSelectedQuestion={setSelectedQuestion}
+            toggleFavorite={toggleFavorite}
+          />
+        )}
       />
     </>
   );

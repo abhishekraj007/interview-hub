@@ -6,6 +6,7 @@ import { StoreContext } from "../stores";
 import { IoLogoJavascript } from "@react-icons/all-files/io5/IoLogoJavascript";
 import { IoLogoReact } from "@react-icons/all-files/io5/IoLogoReact";
 import { CgNotes } from "@react-icons/all-files/cg/CgNotes";
+import { useDevices } from "../hooks/useDevices";
 const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -49,6 +50,7 @@ const Sidebar = observer(() => {
   } = useContext(StoreContext);
 
   const [collapsed, setCollapsed] = useState(true);
+  const isItMobile = useDevices();
 
   const onMenuSelect = (value) => {
     setSelectedMenu(value.key);
@@ -56,10 +58,13 @@ const Sidebar = observer(() => {
 
   return (
     <Sider
-      width={200}
-      collapsible
-      collapsed={collapsed}
+      width={isItMobile ? "100%" : 200}
+      collapsible={!isItMobile}
+      collapsed={isItMobile ? false : collapsed}
       onCollapse={(value) => setCollapsed(value)}
+      style={{
+        height: "100%",
+      }}
     >
       <Menu
         theme="light"

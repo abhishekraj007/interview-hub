@@ -6,6 +6,7 @@ import { Question } from "../../data-contracts/contracts";
 import { Button, Col, Drawer, Form, Input, message, Row } from "antd";
 import { StoreContext } from "../../stores";
 import TinyEditor from "../Editor/TinyEditor";
+import { useDevices } from "../../hooks/useDevices";
 
 const CreateNoteModal = observer(() => {
   const {
@@ -18,6 +19,7 @@ const CreateNoteModal = observer(() => {
   const { setNotes, notes } = questionStore;
   const [title, setTitle] = useState("");
   const [isMakingCall, setIsMakingCall] = useState(false);
+  const isItMobile = useDevices();
 
   const editorRef = useRef(null);
 
@@ -73,7 +75,7 @@ const CreateNoteModal = observer(() => {
   return (
     <Drawer
       title="Create a Note"
-      width={720}
+      width={isItMobile ? "100%" : 720}
       // closeIcon={null}
       closable={false}
       visible={showNoteModal}

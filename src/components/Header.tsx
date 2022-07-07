@@ -1,4 +1,5 @@
 import {
+  CodeOutlined,
   GoogleOutlined,
   MoreOutlined,
   PicCenterOutlined,
@@ -14,11 +15,10 @@ export const Header = observer(() => {
   const {
     authStore: { setShowLoginModal, isLoggedIn, user, logout },
     notesStore: { setShowNoteModal, setShowReplEditor },
+    menuStore: { setShowSidebar, showSidebar },
   } = useContext(StoreContext);
 
   const isItMobile = useDevices();
-
-  console.log(isItMobile);
 
   const handleMenuClick = (item) => {
     console.log(item);
@@ -65,20 +65,23 @@ export const Header = observer(() => {
         key="create-new-note"
         icon={<PlusOutlined />}
       >
-        New Note
+        {isItMobile ? "" : "New Note"}
       </Button>,
       <Button
         onClick={() => setShowReplEditor(true)}
         type="dashed"
         key="open-rept-editor"
+        icon={<CodeOutlined />}
       >
-        Editor
+        {isItMobile ? "" : "Editor"}
       </Button>,
       <Dropdown key="user-menu" overlay={menu} placement="bottomRight">
         <Button icon={<MoreOutlined />} />
       </Dropdown>
     );
   }
+
+  const gap = isItMobile ? 12 : 24;
 
   return (
     <div>
@@ -87,7 +90,7 @@ export const Header = observer(() => {
         title={
           isItMobile
             ? [
-                <Button key="1">
+                <Button onClick={() => setShowSidebar(!showSidebar)} key="1">
                   <PicCenterOutlined />
                 </Button>,
               ]
@@ -100,10 +103,14 @@ export const Header = observer(() => {
             }}
             level={5}
           >
-            Dashboard
+            {isItMobile ? "" : "Dashboard"}
           </Typography.Title>
         }
         extra={rightSideMenu}
+        style={{
+          paddingLeft: gap,
+          paddingRight: gap,
+        }}
       ></PageHeader>
     </div>
   );
