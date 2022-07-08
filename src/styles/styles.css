@@ -25,3 +25,7 @@ pre {
 .ant-btn-link {
   border: none !important;
 }
+
+.ant-menu {
+  user-select: none;
+}

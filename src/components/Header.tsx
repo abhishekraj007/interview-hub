@@ -101,7 +101,7 @@ export const Header = observer(() => {
             style={{
               marginBottom: 0,
             }}
-            level={5}
+            level={4}
           >
             {isItMobile ? "" : "Dashboard"}
           </Typography.Title>

@@ -13,6 +13,12 @@ const Home = (props) => {
     <Layout>
       <Head>
         <title>Dashboard</title>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695906984875280"
+          // @ts-ignore
+          crossorigin="anonymous"
+        ></script>
         {/* Meta tags */}
       </Head>
       <ConfigProvider>
