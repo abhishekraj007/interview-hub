@@ -33,7 +33,12 @@ function Dashboard() {
         }}
       >
         <Header />
-        <Layout className="content-area">
+        <Layout
+          style={{
+            flexDirection: "row",
+          }}
+          className="content-area"
+        >
           {!isItMobile && <Sidebar />}
           <QuestionContainer />
         </Layout>
