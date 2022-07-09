@@ -6,12 +6,12 @@ import { Button, Modal } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 
 const LoginModal = () => {
-  const { authStore } = useContext(StoreContext);
+  const [isMakingCall, setIsMakingCall] = useState(false);
 
+  const { authStore, questionStore } = useContext(StoreContext);
   const { setUser, setIsLoggedIn, showLoginModal, setShowLoginModal } =
     authStore;
-  // const { width } = useWindowDimensions();
-  const [isMakingCall, setIsMakingCall] = useState(false);
+  const { setNotes, notes, setFavsForAllCategories } = questionStore;
 
   const onLogin = async () => {
     try {
@@ -34,7 +34,9 @@ const LoginModal = () => {
       if (userSnap.exists()) {
         // TODO: Can we use to reload page
         // setUserFavs(userSnap?.data()?.favs, getCategory(selectedMenu));
-        window.location.reload();
+        // window.location.reload();
+        setNotes({ ...notes, data: userSnap.data().notes });
+        setFavsForAllCategories(userSnap.data().favs, undefined);
       } else {
         // Add this user to database
         await apiAddUser(newUser);

@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  getCategory,
-  Question,
-  SidebarItem,
-} from "../data-contracts/contracts";
+import { Question, SidebarItem } from "../data-contracts/contracts";
 import { observer } from "mobx-react-lite";
 import QuestionList from "./QuestionList";
 import { StoreContext } from "../stores";
 import { Col, Layout, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import QuestionDetail from "./QuestionDetail";
-import Search from "antd/lib/input/Search";
 import { useDevices } from "../hooks/useDevices";
 
 export const QuestionContainer = observer(() => {
@@ -34,12 +29,11 @@ export const QuestionContainer = observer(() => {
   } = store;
 
   const [selectedQuestion, setSelectedQuestion] = useState<Question>(undefined);
-  // const [searchText, setSearchText] = useState("");
 
   // On Load
   useEffect(() => {
     (async () => {
-      getQuestions(SidebarItem.JAVASCRIPT, user?.id);
+      getQuestions(user?.id);
     })();
   }, [user?.id]);
 
@@ -62,18 +56,10 @@ export const QuestionContainer = observer(() => {
         setFilteredList(javascript.favs);
         break;
       case SidebarItem.REACT:
-        if (react.data.length) {
-          setFilteredList(react.data);
-        } else {
-          getQuestions(SidebarItem.REACT);
-        }
+        setFilteredList(react.data);
         break;
       case SidebarItem.REACT_FAVORITE:
-        if (react.data.length) {
-          setFilteredList(react.favs);
-        } else {
-          getQuestions(SidebarItem.REACT);
-        }
+        setFilteredList(react.favs);
         break;
       case SidebarItem.NOTES:
         setFilteredList(notes.data);
@@ -88,7 +74,7 @@ export const QuestionContainer = observer(() => {
   }, [selectedMenu]);
 
   const onSearch = (value: string) => {
-    searchQuestion(value, getCategory(selectedMenu));
+    searchQuestion(value, selectedMenu);
   };
 
   const gap = isItMobile ? 12 : 24;
@@ -111,18 +97,6 @@ export const QuestionContainer = observer(() => {
               position: "relative",
             }}
           >
-            {/* <Row
-              style={{
-                width: "100%",
-                position: "absolute",
-                top: 24,
-                zIndex: 1,
-              }}
-            >
-            </Row> */}
-            {/* <Col span={10}>
-              <Search placeholder="Search" onSearch={onSearch} />
-            </Col> */}
             <Row>
               <Col span={isItMobile ? 24 : 10}>
                 <QuestionList
@@ -146,7 +120,12 @@ export const QuestionContainer = observer(() => {
                   }}
                   span={14}
                 >
-                  <QuestionDetail item={selectedQuestion} />
+                  <QuestionDetail
+                    item={selectedQuestion}
+                    toggleFavorite={onFavToggle}
+                    selectedMenu={selectedMenu}
+                    setSelectedQuestion={setSelectedQuestion}
+                  />
                 </Col>
               )}
             </Row>

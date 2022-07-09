@@ -1,6 +1,5 @@
 import { ConfigProvider, Layout } from "antd";
 import Dashboard from "../src/screens/Dashboard";
-import { getSide } from "../src/utils";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { StoreContext } from "../src/stores";
@@ -13,12 +12,7 @@ const Home = (props) => {
     <Layout>
       <Head>
         <title>Dashboard</title>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695906984875280"
-          // @ts-ignore
-          crossorigin="anonymous"
-        ></script>
+
         {/* Meta tags */}
       </Head>
       <ConfigProvider>

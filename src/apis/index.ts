@@ -1,5 +1,4 @@
 import {
-  addDoc,
   collection,
   getDocs,
   setDoc,
@@ -7,7 +6,7 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore/lite";
-import { User } from "../data-contracts/contracts";
+import { Question, User } from "../data-contracts/contracts";
 import { db, signInWithGoogle } from "../firebase-config";
 
 export const URLS = {
@@ -35,29 +34,38 @@ export const apiLogInWithGoogle = async () => {
   }
 };
 
-// Get a list of cities from your database
+export declare type QuestionResponse = {
+  javascript: {
+    id: string;
+    data: Question[];
+  };
+  react: {
+    id: string;
+    data: Question[];
+  };
+};
+
+// Get Questions
 export const apiGetJavascriptQuestions = async () => {
-  const jsCol = collection(db, "javascript");
+  const jsCol = collection(db, "questions");
   const jsSnapshot = await getDocs(jsCol);
-  const jsList = jsSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  // console.log(jsSnapshot.docs);
+
+  // @ts-ignore
+  const jsList: QuestionResponse = jsSnapshot.docs.reduce((acc, doc) => {
+    // console.log(doc.data());
+    acc = {
+      ...acc,
+      [doc.id]: {
+        id: doc.id,
+        data: [...(doc.data().data ?? [])],
+      },
+    };
+
+    return acc;
+  }, {});
+
   return jsList;
-};
-
-// Add a question
-export const apiAddJavascriptQuestion = async (payload) => {
-  const jsCol = collection(db, "javascript");
-  const response = await addDoc(jsCol, payload);
-  console.log(response);
-};
-
-// Add a question
-export const apiAddReactQuestion = async (payload) => {
-  const jsCol = collection(db, "javascript");
-  const response = await addDoc(jsCol, payload);
-  return response;
 };
 
 // Add user
@@ -73,7 +81,6 @@ export const apiAddUser = async (payload: User) => {
 
 // Update User
 export const apiUpdateUser = async (userId: string, payload: any) => {
-  console.log(userId, db);
   const userRef = doc(db, "users", userId);
 
   try {
@@ -84,9 +91,11 @@ export const apiUpdateUser = async (userId: string, payload: any) => {
   }
 };
 
-// Update User
+// Update Questions
+// basically javascript
 export const apiUpdateQuestions = async (questionId: string, payload: any) => {
   const userRef = doc(db, "questions", questionId);
+  // questionId -> javascript/react
 
   try {
     const response = await updateDoc(userRef, payload);

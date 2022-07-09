@@ -1,4 +1,4 @@
-import { Layout, Menu, MenuProps } from "antd";
+import { Badge, Layout, Menu, MenuProps, Space } from "antd";
 import { observer } from "mobx-react-lite";
 import { useContext, useState } from "react";
 import { SidebarItem } from "../data-contracts/contracts";
@@ -7,53 +7,93 @@ import { IoLogoJavascript } from "@react-icons/all-files/io5/IoLogoJavascript";
 import { IoLogoReact } from "@react-icons/all-files/io5/IoLogoReact";
 import { CgNotes } from "@react-icons/all-files/cg/CgNotes";
 import { useDevices } from "../hooks/useDevices";
+import { colors } from "../styles/theme";
 const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-const items: MenuItem[] = [
-  {
-    label: "Javascript",
-    key: SidebarItem.JAVASCRIPT_ALL,
-    icon: <IoLogoJavascript />,
-    children: [
-      { label: "All", key: SidebarItem.JAVASCRIPT },
-      {
-        label: "Favorites",
-        key: SidebarItem.JAVASCRIPT_FAVORITE,
-      },
-    ],
-  },
-  {
-    label: "React",
-    key: SidebarItem.REACT_ALL,
-    icon: <IoLogoReact />,
-    children: [
-      { label: "All", key: SidebarItem.REACT },
-      { label: "Favorites", key: SidebarItem.REACT_FAVORITE },
-    ],
-  },
-  {
-    label: "My Notes",
-    key: SidebarItem.NOTES_ALL,
-    icon: <CgNotes />,
-    children: [
-      { label: "All", key: SidebarItem.NOTES },
-      { label: "Favorites", key: SidebarItem.NOTES_FAVORITE },
-    ],
-  },
-];
-
 const Sidebar = observer(() => {
   const {
     menuStore: { setSelectedMenu },
+    authStore: { isLoggedIn },
+    questionStore: { javascript, react, notes, clearFilter },
   } = useContext(StoreContext);
 
   const [collapsed, setCollapsed] = useState(true);
   const isItMobile = useDevices();
 
+  const label = (label, count) => {
+    return (
+      <Space align="center" className="space-between">
+        <span>{label}</span>
+        <Badge
+          className="badge"
+          count={count}
+          style={{ backgroundColor: colors.secondary }}
+          size="small"
+          overflowCount={2000}
+        />
+      </Space>
+    );
+  };
+
+  const items: MenuItem[] = [
+    {
+      label: isLoggedIn
+        ? "Javascript"
+        : label("Javascript", javascript?.data?.length),
+      key: isLoggedIn ? SidebarItem.JAVASCRIPT_ALL : SidebarItem.JAVASCRIPT,
+      icon: <IoLogoJavascript />,
+      children: isLoggedIn
+        ? [
+            {
+              label: label("All", javascript?.data?.length),
+              key: SidebarItem.JAVASCRIPT,
+            },
+            {
+              label: label("Favorites", javascript?.favs?.length),
+              key: SidebarItem.JAVASCRIPT_FAVORITE,
+            },
+          ]
+        : undefined,
+    },
+    {
+      label: isLoggedIn ? "React" : label("React", react?.data?.length),
+      key: isLoggedIn ? SidebarItem.REACT_ALL : SidebarItem.REACT,
+      icon: <IoLogoReact />,
+      children: isLoggedIn
+        ? [
+            {
+              label: label("All", react?.data?.length),
+              key: SidebarItem.REACT,
+            },
+            {
+              label: label("Favorites", react?.favs?.length),
+              key: SidebarItem.REACT_FAVORITE,
+            },
+          ]
+        : undefined,
+    },
+  ];
+
+  if (isLoggedIn) {
+    items.push({
+      label: isLoggedIn ? "My Notes" : label("My Notes", notes?.data?.length),
+      key: SidebarItem.NOTES_ALL,
+      icon: <CgNotes />,
+      children: [
+        { label: label("All", notes?.data?.length), key: SidebarItem.NOTES },
+        {
+          label: label("Favorites", notes?.favs?.length),
+          key: SidebarItem.NOTES_FAVORITE,
+        },
+      ],
+    });
+  }
+
   const onMenuSelect = (value) => {
     setSelectedMenu(value.key);
+    // clearFilter(value.key);s
   };
 
   return (

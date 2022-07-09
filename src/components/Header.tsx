@@ -10,18 +10,19 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { StoreContext } from "../stores";
 import { useDevices } from "../hooks/useDevices";
+import { apiUpdateQuestions } from "../apis";
 
 export const Header = observer(() => {
   const {
     authStore: { setShowLoginModal, isLoggedIn, user, logout },
     notesStore: { setShowNoteModal, setShowReplEditor },
     menuStore: { setShowSidebar, showSidebar },
+    questionStore: { react },
   } = useContext(StoreContext);
 
   const isItMobile = useDevices();
 
   const handleMenuClick = (item) => {
-    console.log(item);
     if (item.key === "logout") {
       logout();
     }

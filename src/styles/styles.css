@@ -29,3 +29,16 @@ pre {
 .ant-menu {
   user-select: none;
 }
+
+.space-between {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.badge {
+  min-width: 36px;
+}
+
+.badge sup {
+  font-size: 10px;
+}

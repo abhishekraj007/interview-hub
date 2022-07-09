@@ -5,6 +5,7 @@ import { colors } from "../styles/theme";
 import StarFilled from "@ant-design/icons/lib/icons/StarFilled";
 import StarOutlined from "@ant-design/icons/lib/icons/StarOutlined";
 import { useDevices } from "../hooks/useDevices";
+import QuestionDetail from "./QuestionDetail";
 
 const { Panel } = Collapse;
 
@@ -50,7 +51,12 @@ function QuestionItem({
           header={`${index}. ${item.title}`}
           key={index}
         >
-          <div dangerouslySetInnerHTML={{ __html: html }}></div>
+          <QuestionDetail
+            item={item}
+            selectedMenu={selectedMenu}
+            toggleFavorite={toggleFavorite}
+            setSelectedQuestion={setSelectedQuestion}
+          />
         </Panel>
       </Collapse>
     );
@@ -73,7 +79,7 @@ function QuestionItem({
         }}
         onClick={() => setSelectedQuestion(item)}
       >
-        {`${index}. ${item.title}`}
+        {`${index + 1}. ${item.title}`}
       </span>
 
       <Button
@@ -81,7 +87,7 @@ function QuestionItem({
         size="small"
         key="bookmarked"
         type="link"
-        danger
+        // danger
       >
         {item.bookmarked ? <StarFilled /> : <StarOutlined />}
       </Button>

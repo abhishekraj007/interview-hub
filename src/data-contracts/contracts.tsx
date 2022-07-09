@@ -36,12 +36,6 @@ export enum SidebarItem {
   ALL_FAVORITES = "ALL_FAVORITES",
 }
 
-export const getCategory = (category: string) => {
-  if (category) {
-    return SidebarItem.JAVASCRIPT;
-  }
-};
-
 export const getCategoryKey = (category: SidebarItem) => {
   // If item is present in fav list remove it
   let getMenuKey = "javascript";

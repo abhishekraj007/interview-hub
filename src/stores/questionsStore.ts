@@ -1,5 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { apiGetQuestions, URLS, apiUpdateUser, apiGetUserData } from "../apis";
+import {
+  apiUpdateUser,
+  apiGetUserData,
+  apiGetJavascriptQuestions,
+} from "../apis";
 import {
   getCategoryKey,
   Question,
@@ -24,7 +28,7 @@ export interface IQuestionStore {
   setFilteredList: (questions: Question[]) => void;
   allFavorites: Question[];
   setAllFavorites: (questions: Question[]) => void;
-  getQuestions: (type: SidebarItem, userId?: string) => void;
+  getQuestions: (userId?: string) => void;
   toggleFavorite: (
     item: Question,
     category?: SidebarItem,
@@ -39,6 +43,10 @@ export interface IQuestionStore {
   userFavs: Question[];
   setUserFavs: (data: Question[]) => void;
   questionsMap: any;
+  setFavsForAllCategories: (
+    favList: Question[],
+    excludeCurrentCategory?: SidebarItem
+  ) => void;
 }
 
 export class QuestionStore implements IQuestionStore {
@@ -89,45 +97,7 @@ export class QuestionStore implements IQuestionStore {
     this.userFavs = data;
   };
 
-  // This is when user loads the page
-  updateFavs = (
-    favList: Question[],
-    category?: SidebarItem,
-    showBookmarkedOnTop?: boolean
-  ) => {
-    // Add user bookmarked list
-    this.userFavs = favList;
-    const { getMenuKey, setMenuKey } = getCategoryKey(category);
-
-    // Filter bookmarked items by category
-    const favs = (favList ?? [])
-      .map((item) => {
-        if (item.type === category) {
-          return { ...item, bookmarked: true };
-        }
-      })
-      .filter((item) => item);
-
-    const dataWithFavsOnTop = this.includeFavorites(
-      this[getMenuKey].data,
-      favs
-    );
-
-    const data = showBookmarkedOnTop
-      ? dataWithFavsOnTop
-      : this[getMenuKey].data;
-
-    this[setMenuKey]({
-      favs,
-      data,
-    });
-    this.setFilteredList(data);
-    this.setFavsForAllCategories(favList, category);
-
-    // Set Favs for all categories
-  };
-
-  setFavsForAllCategories = (favList, excludeCurrentCategory) => {
+  setFavsForAllCategories = (favList: Question[], excludeCurrentCategory) => {
     const categories = [
       SidebarItem.JAVASCRIPT,
       SidebarItem.REACT,
@@ -137,17 +107,23 @@ export class QuestionStore implements IQuestionStore {
     categories.forEach((category) => {
       const { getMenuKey, setMenuKey } = getCategoryKey(category);
 
+      const favs = (favList ?? [])
+        .map((item) => {
+          if (item.type === category) {
+            return { ...item, bookmarked: true };
+          }
+        })
+        .filter((item) => item);
+
+      const data = this.includeFavorites(this[getMenuKey].data, favs);
+
       this[setMenuKey]({
-        data: this[getMenuKey].data,
-        favs: favList
-          ?.map((item) => {
-            if (item.type === category) {
-              return item;
-            }
-          })
-          .filter((item) => item),
+        data,
+        favs,
       });
     });
+
+    this.setFilteredList(this.javascript.data);
   };
 
   constructor() {
@@ -163,61 +139,37 @@ export class QuestionStore implements IQuestionStore {
     return [...favs, ...data];
   };
 
-  getQuestions = async (category: SidebarItem, userId?: string) => {
+  getQuestions = async (userId?: string) => {
     try {
-      console.log("made fresh api call");
       this.setIsLoading(true);
-      let data = [];
+      // let data = [];
 
-      switch (category) {
-        case SidebarItem.JAVASCRIPT:
-          // Get js questions and set to store
-          data = await apiGetQuestions(URLS.js);
-          this.setJavascript({
-            ...this.javascript,
-            data,
-          });
+      const res = await apiGetJavascriptQuestions();
+      // console.log(res);
+      const jsData = res?.javascript?.data || [];
+      const reactData = res?.react?.data || [];
 
-          // Add data to questionMap
-          data.forEach((item) => {
-            this.questionsMap[item?.id] = item;
-          });
+      // console.log(jsData);
 
-          // If user is loged in get bookmarked Item
-          // Otherwise there is no bookmared
+      this.setJavascript({
+        ...this.javascript,
+        data: jsData,
+      });
 
-          if (userId) {
-            const userSnap = await apiGetUserData(userId);
-            console.log(userSnap.data());
-            // Notes is only for logged in users
-            this.setNotes({ ...this.notes, data: userSnap.data().notes });
-            this.updateFavs(userSnap.data().favs, category, true);
-          } else {
-            this.setFilteredList(data);
-          }
+      this.setReact({
+        ...this.react,
+        data: reactData,
+      });
 
-          break;
-        case SidebarItem.REACT:
-          data = await apiGetQuestions(URLS.react);
-
-          this.setReact({
-            ...this.react,
-            data,
-          });
-
-          data.forEach((item) => {
-            this.questionsMap[item?.id] = item;
-          });
-
-          if (this.userFavs?.length) {
-            this.updateFavs(this.userFavs, category, true);
-          } else {
-            this.setFilteredList(data);
-          }
-
-          break;
-        default:
-          console.log("Made no call");
+      if (userId) {
+        const userSnap = await apiGetUserData(userId);
+        // console.log(userSnap.data());
+        // Notes is only for logged in users
+        this.setNotes({ ...this.notes, data: userSnap.data().notes });
+        this.setFavsForAllCategories(userSnap.data().favs, undefined);
+        // this.updateFavs(userSnap.data().favs, SidebarItem.REACT, true);
+      } else {
+        this.setFilteredList(jsData);
       }
     } catch (error) {
       console.log(error);
@@ -322,7 +274,11 @@ export class QuestionStore implements IQuestionStore {
       this[setMenuKey]({ data: newList, favs: newFavList });
     }
 
-    const allFavs = [...this.javascript.favs, ...this.react.favs];
+    const allFavs = [
+      ...this.javascript.favs,
+      ...this.react.favs,
+      ...this.notes.favs,
+    ];
     this.setUserFavs(allFavs);
 
     switch (category) {
