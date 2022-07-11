@@ -56,6 +56,7 @@ function QuestionDetail({
       <Row
         style={{
           marginBottom: 16,
+          paddingRight: 16,
         }}
         justify="end"
       >

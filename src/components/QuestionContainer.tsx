@@ -73,6 +73,8 @@ export const QuestionContainer = observer(() => {
       default:
         setFilteredList(javascript.data);
     }
+
+    setSelectedQuestion(undefined);
   }, [selectedMenu]);
 
   const onSearch = (value: string) => {

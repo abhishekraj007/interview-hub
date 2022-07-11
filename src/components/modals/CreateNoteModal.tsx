@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { v4 as uuid } from "uuid";
-import { apiUpdateUser } from "../../apis";
-import { Question, SidebarItem } from "../../data-contracts/contracts";
+import { apiUpdateQuestions, apiUpdateUser } from "../../apis";
+import {
+  getCategoryKey,
+  Question,
+  SidebarItem,
+} from "../../data-contracts/contracts";
 import { Button, Col, Drawer, Form, Input, message, Row } from "antd";
 import { StoreContext } from "../../stores";
 import TinyEditor from "../Editor/TinyEditor";
@@ -17,12 +21,18 @@ const CreateNoteModal = observer(({}: Props) => {
     notesStore,
     authStore: { user },
     questionStore,
-    menuStore: { setSelectedMenu },
+    menuStore: { setSelectedMenu, selectedMenu },
   } = useContext(StoreContext);
 
   const { showNoteModal, setShowNoteModal } = notesStore;
-  const { setNotes, notes, selectedQuestion, isEdit, setIsEdit } =
-    questionStore;
+  const {
+    setNotes,
+    notes,
+    selectedQuestion,
+    setSelectedQuestion,
+    isEdit,
+    setIsEdit,
+  } = questionStore;
 
   const [title, setTitle] = useState("");
   const [isMakingCall, setIsMakingCall] = useState(false);
@@ -31,6 +41,7 @@ const CreateNoteModal = observer(({}: Props) => {
   const editorRef = useRef(null);
 
   const onAddNote = async (content) => {
+    // Create a new Note
     let item: Question = {
       bookmarked: false,
       title,
@@ -39,10 +50,10 @@ const CreateNoteModal = observer(({}: Props) => {
       type: "NOTES",
     };
 
-    const { data = [] } = notes;
+    let data = notes.data || [];
+    let newData = [item, ...data];
 
-    let newNotes = [item, ...data];
-
+    // Edit anything
     if (isEdit) {
       item = {
         ...selectedQuestion,
@@ -50,39 +61,66 @@ const CreateNoteModal = observer(({}: Props) => {
         content,
       };
 
-      // get index of item
-      // replace with new item
+      // Get data for selected category
+
+      const { getMenuKey } = getCategoryKey(selectedMenu);
+
+      const { data } = questionStore[getMenuKey];
+      console.log(data);
 
       const indexOfQuestion = data.findIndex(
         (item) => item.id === selectedQuestion.id
       );
 
       data[indexOfQuestion] = item;
-      newNotes = data;
-    }
+      newData = data;
+      setSelectedQuestion(item);
 
-    // const item: Question = {
-    //   bookmarked: false,
-    //   title,
-    //   content,
-    //   id: uuid(),
-    //   type: "NOTES",
-    // };
-    // console.log(item);
+      console.log(indexOfQuestion, data[indexOfQuestion]);
+    }
 
     try {
       setIsMakingCall(true);
-      await apiUpdateUser(user.id, { notes: newNotes });
-      setNotes({
-        ...notes,
-        data: newNotes,
-      });
-      message.success("Note created successfully!");
-      setTitle("");
+
+      // Which cat to update
+
+      if (isEdit) {
+        const { getMenuKey, setMenuKey } = getCategoryKey(selectedMenu);
+
+        const getter = questionStore[getMenuKey];
+        const setter = questionStore[setMenuKey];
+        setter({
+          ...getter,
+          data: newData,
+        });
+
+        if (selectedMenu === SidebarItem.NOTES) {
+          await apiUpdateUser(user.id, { notes: newData });
+        } else {
+          await apiUpdateQuestions(getMenuKey, { data: newData });
+        }
+      } else {
+        // It's a note
+        // create or add new note
+        await apiUpdateUser(user.id, { notes: newData });
+
+        setNotes({
+          ...notes,
+          data: newData,
+        });
+      }
+
+      message.success(
+        isEdit ? "Successfully Edited!" : "Note created successfully!"
+      );
       setShowNoteModal(false);
-      setSelectedMenu(SidebarItem.NOTES);
+      if (!isEdit) {
+        setSelectedMenu(SidebarItem.NOTES);
+      }
       setIsEdit(false);
+      setTitle("");
     } catch (error) {
+      message.error("Something went wrong! Try again later.");
       console.log(error);
     } finally {
       setIsMakingCall(false);
@@ -115,7 +153,7 @@ const CreateNoteModal = observer(({}: Props) => {
     }
   };
 
-  console.log("title, content", isEdit, selectedQuestion);
+  // console.log("title, content", isEdit, selectedQuestion);
 
   let initialContent = "";
 
@@ -147,22 +185,6 @@ const CreateNoteModal = observer(({}: Props) => {
       >
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col span={24}>
-            {/* <Form.Item
-              name="title"
-              label="Title"
-              // initialValue={title}
-              shouldUpdate={true}
-              rules={[{ required: true, message: "Please enter title" }]}
-            >
-              <Input
-                size="large"
-                placeholder="Enter title"
-                // defaultValue={title}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Form.Item> */}
-
             <Input
               size="large"
               value={title}

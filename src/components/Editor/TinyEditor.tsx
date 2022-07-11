@@ -38,6 +38,7 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
         toolbar:
           "removeformat h1 h2 h3 bold italic underline codesample numlist bullist blockquote",
         width: "100%",
+        height: "calc(100vh - 260px)",
         codesample_global_prismjs: true,
         codesample_languages: [
           { text: "JavaScript", value: "javascript" },

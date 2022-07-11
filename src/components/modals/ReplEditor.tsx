@@ -2,12 +2,13 @@ import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Drawer, Select, Typography } from "antd";
 import { StoreContext } from "../../stores";
+import { useDevices } from "../../hooks/useDevices";
 const { Option } = Select;
 const { Title } = Typography;
 
 const ReplEditor = observer(() => {
   const { notesStore } = useContext(StoreContext);
-
+  const isItMobile = useDevices();
   const { showReplEditor, setShowReplEditor } = notesStore;
   const [playground, setPlayground] = useState("js");
 
@@ -37,7 +38,7 @@ const ReplEditor = observer(() => {
         </Title>
         <Select
           defaultValue={playground}
-          style={{ width: 200 }}
+          style={{ width: 160 }}
           onChange={(value) => setPlayground(value)}
         >
           <Option value="js">Javascript</Option>
@@ -50,13 +51,23 @@ const ReplEditor = observer(() => {
     );
   };
 
+  const equalPadding = isItMobile ? 8 : 24;
+
   return (
     <Drawer
       title={renderCodeType()}
       width={"100%"}
       closable={false}
       visible={showReplEditor}
-      bodyStyle={{ paddingBottom: 80 }}
+      bodyStyle={{
+        paddingBottom: isItMobile ? 0 : 40,
+        paddingLeft: isItMobile ? 0 : 24,
+        paddingTop: isItMobile ? 0 : 24,
+      }}
+      headerStyle={{
+        paddingLeft: equalPadding,
+        paddingRight: equalPadding,
+      }}
       extra={<Button onClick={() => setShowReplEditor(false)}>Cancel</Button>}
     >
       <iframe
