@@ -28,7 +28,7 @@ export interface IQuestionStore {
   setFilteredList: (questions: Question[]) => void;
   allFavorites: Question[];
   setAllFavorites: (questions: Question[]) => void;
-  getQuestions: (userId?: string) => void;
+  getQuestions: (userId?: string, selectedCategory?: SidebarItem) => void;
   toggleFavorite: (
     item: Question,
     category?: SidebarItem,
@@ -47,9 +47,17 @@ export interface IQuestionStore {
     favList: Question[],
     excludeCurrentCategory?: SidebarItem
   ) => void;
+  selectedQuestion: Question;
+  setSelectedQuestion: (item: Question) => void;
+  isEdit: boolean;
+  setIsEdit: (value: boolean) => void;
 }
 
 export class QuestionStore implements IQuestionStore {
+  constructor() {
+    makeAutoObservable(this);
+  }
+
   isLoading: boolean = false;
   filteredList: Question[] = [];
   allFavorites: Question[] = [];
@@ -68,6 +76,16 @@ export class QuestionStore implements IQuestionStore {
   };
 
   questionsMap = {};
+
+  selectedQuestion: Question = undefined;
+  setSelectedQuestion = (item: Question) => {
+    this.selectedQuestion = item;
+  };
+
+  isEdit: boolean = false;
+  setIsEdit = (value: boolean) => {
+    this.isEdit = value;
+  };
 
   setJavascript = (data: IQModel) => {
     this.javascript = data;
@@ -97,12 +115,17 @@ export class QuestionStore implements IQuestionStore {
     this.userFavs = data;
   };
 
-  setFavsForAllCategories = (favList: Question[], excludeCurrentCategory) => {
+  setFavsForAllCategories = (
+    favList: Question[],
+    selectedCategory: SidebarItem
+  ) => {
     const categories = [
       SidebarItem.JAVASCRIPT,
       SidebarItem.REACT,
       SidebarItem.NOTES,
-    ].filter((item) => item !== excludeCurrentCategory);
+    ];
+
+    const { getMenuKey } = getCategoryKey(selectedCategory);
 
     categories.forEach((category) => {
       const { getMenuKey, setMenuKey } = getCategoryKey(category);
@@ -123,12 +146,8 @@ export class QuestionStore implements IQuestionStore {
       });
     });
 
-    this.setFilteredList(this.javascript.data);
+    this.setFilteredList(this[getMenuKey].data);
   };
-
-  constructor() {
-    makeAutoObservable(this);
-  }
 
   includeFavorites = (data: Question[], favs: Question[]) => {
     favs.forEach((fav) => {
@@ -139,7 +158,7 @@ export class QuestionStore implements IQuestionStore {
     return [...favs, ...data];
   };
 
-  getQuestions = async (userId?: string) => {
+  getQuestions = async (userId?: string, selectedCategory?: SidebarItem) => {
     try {
       this.setIsLoading(true);
       // let data = [];
@@ -166,7 +185,7 @@ export class QuestionStore implements IQuestionStore {
         // console.log(userSnap.data());
         // Notes is only for logged in users
         this.setNotes({ ...this.notes, data: userSnap.data().notes });
-        this.setFavsForAllCategories(userSnap.data().favs, undefined);
+        this.setFavsForAllCategories(userSnap.data().favs, selectedCategory);
         // this.updateFavs(userSnap.data().favs, SidebarItem.REACT, true);
       } else {
         this.setFilteredList(jsData);

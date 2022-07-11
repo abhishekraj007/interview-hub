@@ -23,6 +23,8 @@ function QuestionDetail({
 }: Props) {
   const {
     authStore: { isLoggedIn },
+    notesStore: { setShowNoteModal },
+    questionStore: { setIsEdit },
   } = useContext(StoreContext);
 
   if (!item) {
@@ -73,7 +75,15 @@ function QuestionDetail({
           >
             {item.bookmarked ? <StarFilled /> : <StarOutlined />}
           </Button>
-          <Button size="small" key="edit" type="link">
+          <Button
+            size="small"
+            key="edit"
+            type="link"
+            onClick={() => {
+              setShowNoteModal(true);
+              setIsEdit(true);
+            }}
+          >
             <EditOutlined />
           </Button>
         </Space>

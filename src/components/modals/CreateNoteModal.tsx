@@ -2,21 +2,28 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { v4 as uuid } from "uuid";
 import { apiUpdateUser } from "../../apis";
-import { Question } from "../../data-contracts/contracts";
+import { Question, SidebarItem } from "../../data-contracts/contracts";
 import { Button, Col, Drawer, Form, Input, message, Row } from "antd";
 import { StoreContext } from "../../stores";
 import TinyEditor from "../Editor/TinyEditor";
 import { useDevices } from "../../hooks/useDevices";
 
-const CreateNoteModal = observer(() => {
+interface Props {}
+
+const CreateNoteModal = observer(({}: Props) => {
+  // const [form] = Form.useForm();
+
   const {
     notesStore,
     authStore: { user },
     questionStore,
+    menuStore: { setSelectedMenu },
   } = useContext(StoreContext);
 
   const { showNoteModal, setShowNoteModal } = notesStore;
-  const { setNotes, notes } = questionStore;
+  const { setNotes, notes, selectedQuestion, isEdit, setIsEdit } =
+    questionStore;
+
   const [title, setTitle] = useState("");
   const [isMakingCall, setIsMakingCall] = useState(false);
   const isItMobile = useDevices();
@@ -24,18 +31,44 @@ const CreateNoteModal = observer(() => {
   const editorRef = useRef(null);
 
   const onAddNote = async (content) => {
-    const item: Question = {
+    let item: Question = {
       bookmarked: false,
       title,
       content,
       id: uuid(),
       type: "NOTES",
     };
-    console.log(item);
 
     const { data = [] } = notes;
 
-    const newNotes = [item, ...data];
+    let newNotes = [item, ...data];
+
+    if (isEdit) {
+      item = {
+        ...selectedQuestion,
+        title,
+        content,
+      };
+
+      // get index of item
+      // replace with new item
+
+      const indexOfQuestion = data.findIndex(
+        (item) => item.id === selectedQuestion.id
+      );
+
+      data[indexOfQuestion] = item;
+      newNotes = data;
+    }
+
+    // const item: Question = {
+    //   bookmarked: false,
+    //   title,
+    //   content,
+    //   id: uuid(),
+    //   type: "NOTES",
+    // };
+    // console.log(item);
 
     try {
       setIsMakingCall(true);
@@ -47,6 +80,8 @@ const CreateNoteModal = observer(() => {
       message.success("Note created successfully!");
       setTitle("");
       setShowNoteModal(false);
+      setSelectedMenu(SidebarItem.NOTES);
+      setIsEdit(false);
     } catch (error) {
       console.log(error);
     } finally {
@@ -55,13 +90,21 @@ const CreateNoteModal = observer(() => {
   };
 
   useEffect(() => {
-    setTitle("");
-  }, []);
+    console.log("hello lol");
+    setTitle(isEdit ? selectedQuestion?.title : "");
 
+    // form.setFieldsValue({
+    //   title: "selectedQuestion?.title",
+    // });
+  }, [isEdit, selectedQuestion]);
+
+  // On Close
   const closeModal = () => {
     setShowNoteModal(false);
+    setIsEdit(false);
   };
 
+  // On Submit
   const onSubmit = () => {
     const content = editorRef?.current.getValue();
 
@@ -71,6 +114,20 @@ const CreateNoteModal = observer(() => {
       message.error("Can't create empty note!");
     }
   };
+
+  console.log("title, content", isEdit, selectedQuestion);
+
+  let initialContent = "";
+
+  if (isEdit && selectedQuestion) {
+    if (Array.isArray(selectedQuestion?.content)) {
+      initialContent = selectedQuestion.content.reduce((acc, item) => {
+        return acc + item;
+      }, "");
+    } else {
+      initialContent = selectedQuestion?.content;
+    }
+  }
 
   return (
     <Drawer
@@ -82,26 +139,42 @@ const CreateNoteModal = observer(() => {
       bodyStyle={{ paddingBottom: 80 }}
       extra={<Button onClick={closeModal}>Cancel</Button>}
     >
-      <Form layout="vertical" hideRequiredMark onSubmitCapture={onSubmit}>
+      <Form
+        // form={form}
+        layout="vertical"
+        hideRequiredMark
+        onSubmitCapture={onSubmit}
+      >
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col span={24}>
-            <Form.Item
+            {/* <Form.Item
               name="title"
               label="Title"
+              // initialValue={title}
+              shouldUpdate={true}
               rules={[{ required: true, message: "Please enter title" }]}
             >
               <Input
                 size="large"
                 placeholder="Enter title"
+                // defaultValue={title}
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-            </Form.Item>
+            </Form.Item> */}
+
+            <Input
+              size="large"
+              value={title}
+              placeholder="Enter title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
-              <TinyEditor initialValue={""} ref={editorRef} />
+              <TinyEditor initialValue={initialContent} ref={editorRef} />
             </Form.Item>
           </Col>
         </Row>

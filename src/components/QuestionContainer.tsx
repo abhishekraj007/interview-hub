@@ -25,15 +25,17 @@ export const QuestionContainer = observer(() => {
       react,
       javascript,
       notes,
+      selectedQuestion,
+      setSelectedQuestion,
     },
   } = store;
 
-  const [selectedQuestion, setSelectedQuestion] = useState<Question>(undefined);
+  // const [selectedQuestion, setSelectedQuestion] = useState<Question>(undefined);
 
   // On Load
   useEffect(() => {
     (async () => {
-      getQuestions(user?.id);
+      getQuestions(user?.id, selectedMenu);
     })();
   }, [user?.id]);
 

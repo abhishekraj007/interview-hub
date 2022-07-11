@@ -14,7 +14,7 @@ import SidebarModal from "../components/modals/SidebarModal";
 function Dashboard() {
   const store = useContext(StoreContext);
   const {
-    authStore: { checkUserLoggedInStatus },
+    authStore: { checkUserLoggedInStatus, isLoggedIn },
   } = store;
 
   console.log("store=>", store);
@@ -44,8 +44,12 @@ function Dashboard() {
         </Layout>
 
         <LoginModal />
-        <CreateNoteModal />
-        <ReplEditor />
+        {isLoggedIn && (
+          <>
+            <CreateNoteModal />
+            <ReplEditor />
+          </>
+        )}
       </Layout>
       <SidebarModal />
     </>
