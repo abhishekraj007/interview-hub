@@ -59,10 +59,6 @@ pre {
   padding-right: 0 !important;
 }
 
-.panel
-  .ant-collapse-icon-position-end
-  > .ant-collapse-item
-  > .ant-collapse-header
-  .ant-collapse-arrow {
-  right: 0;
+.panel .ant-collapse-arrow {
+  right: 0 !important;
 }
