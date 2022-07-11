@@ -16,6 +16,7 @@ pre {
   box-shadow: 2px 2px 3px 1px rgb(0 0 0 / 40%);
   color: #fff;
   padding: 1rem;
+  max-width: calc(100vw - 30px);
 }
 
 .content-area {
@@ -41,4 +42,27 @@ pre {
 
 .badge sup {
   font-size: 10px;
+}
+
+.panel .ant-collapse-header {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.panel .ant-collapse-content {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.panel .ant-collapse-content .ant-collapse-content-box {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.panel
+  .ant-collapse-icon-position-end
+  > .ant-collapse-item
+  > .ant-collapse-header
+  .ant-collapse-arrow {
+  right: 0;
 }

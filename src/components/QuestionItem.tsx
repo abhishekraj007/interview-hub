@@ -43,13 +43,14 @@ function QuestionItem({
     }
 
     return (
-      <Collapse accordion bordered={false} ghost expandIconPosition="end">
+      <Collapse bordered={false} ghost expandIconPosition="end">
         <Panel
           style={{
             paddingLeft: 0,
           }}
-          header={`${index}. ${item.title}`}
+          header={`${index + 1}. ${item.title}`}
           key={index}
+          className="panel"
         >
           <QuestionDetail
             item={item}
