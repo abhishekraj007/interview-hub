@@ -6,11 +6,14 @@ import {
   getCategoryKey,
   Question,
   SidebarItem,
+  tags,
+  tagsLabel,
 } from "../../data-contracts/contracts";
 import { Button, Col, Drawer, Form, Input, message, Row } from "antd";
 import { StoreContext } from "../../stores";
 import TinyEditor from "../Editor/TinyEditor";
 import { useDevices } from "../../hooks/useDevices";
+import CheckableTag from "antd/lib/tag/CheckableTag";
 
 interface Props {}
 
@@ -32,11 +35,21 @@ const CreateNoteModal = observer(({}: Props) => {
     setSelectedQuestion,
     isEdit,
     setIsEdit,
+    allFavorites,
   } = questionStore;
 
   const [title, setTitle] = useState("");
   const [isMakingCall, setIsMakingCall] = useState(false);
   const isItMobile = useDevices();
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const handleTagChange = (tag: string, checked: boolean) => {
+    const nextSelectedTags = checked
+      ? [...selectedTags, tag]
+      : selectedTags.filter((t) => t !== tag);
+
+    setSelectedTags(nextSelectedTags);
+  };
 
   const editorRef = useRef(null);
 
@@ -48,10 +61,13 @@ const CreateNoteModal = observer(({}: Props) => {
       content,
       id: uuid(),
       type: "NOTES",
+      tags: selectedTags,
     };
 
     let data = notes.data || [];
     let newData = [item, ...data];
+    let newFavs = allFavorites;
+    let updateFavs = false;
 
     // Edit anything
     if (isEdit) {
@@ -59,6 +75,7 @@ const CreateNoteModal = observer(({}: Props) => {
         ...selectedQuestion,
         title,
         content,
+        tags: selectedTags,
       };
 
       // Get data for selected category
@@ -66,17 +83,23 @@ const CreateNoteModal = observer(({}: Props) => {
       const { getMenuKey } = getCategoryKey(selectedMenu);
 
       const { data } = questionStore[getMenuKey];
-      console.log(data);
 
       const indexOfQuestion = data.findIndex(
         (item) => item.id === selectedQuestion.id
       );
 
+      const indexOfQuestionInFav = allFavorites.findIndex(
+        (item) => item.id === selectedQuestion.id
+      );
+
+      if (indexOfQuestionInFav) {
+        newFavs[indexOfQuestionInFav] = item;
+        updateFavs = true;
+      }
+
       data[indexOfQuestion] = item;
       newData = data;
       setSelectedQuestion(item);
-
-      console.log(indexOfQuestion, data[indexOfQuestion]);
     }
 
     try {
@@ -84,20 +107,41 @@ const CreateNoteModal = observer(({}: Props) => {
 
       // Which cat to update
 
+      // Update favs for user as well if the edit one is favs
+
       if (isEdit) {
         const { getMenuKey, setMenuKey } = getCategoryKey(selectedMenu);
 
         const getter = questionStore[getMenuKey];
         const setter = questionStore[setMenuKey];
+
         setter({
           ...getter,
           data: newData,
         });
 
         if (selectedMenu === SidebarItem.NOTES) {
-          await apiUpdateUser(user.id, { notes: newData });
+          // if it's a note
+          let payload: any = { notes: newData };
+          if (updateFavs) {
+            payload = { ...payload, favs: newFavs };
+          }
+
+          await apiUpdateUser(user.id, payload);
         } else {
+          // Edited question is in fav as well
+          // so update it
+
+          // While updating a question make bookmark false for all question
+          newData = newData.map((question) => ({
+            ...question,
+            bookmarked: false,
+            tags: selectedTags,
+          }));
           await apiUpdateQuestions(getMenuKey, { data: newData });
+          if (updateFavs) {
+            await apiUpdateUser(user.id, { favs: newFavs });
+          }
         }
       } else {
         // It's a note
@@ -169,8 +213,8 @@ const CreateNoteModal = observer(({}: Props) => {
 
   return (
     <Drawer
-      title="Create a Note"
-      width={isItMobile ? "100%" : 720}
+      title={isEdit ? "Edit" : "Create"}
+      width={isItMobile ? "100%" : "70%"}
       // closeIcon={null}
       closable={false}
       visible={showNoteModal}
@@ -183,7 +227,7 @@ const CreateNoteModal = observer(({}: Props) => {
         hideRequiredMark
         onSubmitCapture={onSubmit}
       >
-        <Row gutter={16} style={{ marginBottom: 16 }}>
+        <Row style={{ marginBottom: 16 }}>
           <Col span={24}>
             <Input
               size="large"
@@ -191,6 +235,22 @@ const CreateNoteModal = observer(({}: Props) => {
               placeholder="Enter title"
               onChange={(e) => setTitle(e.target.value)}
             />
+          </Col>
+        </Row>
+        <Row style={{ marginBottom: 16 }}>
+          <Col span={3}>
+            <span>Categories:</span>
+          </Col>
+          <Col span={21}>
+            {tags.map((tag) => (
+              <CheckableTag
+                key={tag}
+                checked={selectedTags.indexOf(tag) > -1}
+                onChange={(checked) => handleTagChange(tag, checked)}
+              >
+                {tagsLabel[tag]}
+              </CheckableTag>
+            ))}
           </Col>
         </Row>
         <Row gutter={16}>

@@ -34,11 +34,11 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
         body_class: "tiny_editor",
         content_css: "dark",
         menubar: false,
-        plugins: "lists codesample",
+        plugins: "lists codesample fullscreen link",
         toolbar:
-          "removeformat h1 h2 h3 bold italic underline codesample numlist bullist blockquote",
+          "removeformat h1 h2 h3 bold italic underline codesample numlist bullist blockquote link fullscreen",
         width: "100%",
-        height: "calc(100vh - 260px)",
+        height: "calc(100vh - 320px)",
         codesample_global_prismjs: true,
         codesample_languages: [
           { text: "JavaScript", value: "javascript" },

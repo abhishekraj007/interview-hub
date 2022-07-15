@@ -46,7 +46,7 @@ export declare type QuestionResponse = {
 };
 
 // Get Questions
-export const apiGetJavascriptQuestions = async () => {
+export const apiGetAllQuestions = async () => {
   const jsCol = collection(db, "questions");
   const jsSnapshot = await getDocs(jsCol);
   // console.log(jsSnapshot.docs);

@@ -1,9 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import {
-  apiUpdateUser,
-  apiGetUserData,
-  apiGetJavascriptQuestions,
-} from "../apis";
+import { apiUpdateUser, apiGetUserData, apiGetAllQuestions } from "../apis";
 import {
   getCategoryKey,
   Question,
@@ -163,7 +159,7 @@ export class QuestionStore implements IQuestionStore {
       this.setIsLoading(true);
       // let data = [];
 
-      const res = await apiGetJavascriptQuestions();
+      const res = await apiGetAllQuestions();
       // console.log(res);
       const jsData = res?.javascript?.data || [];
       const reactData = res?.react?.data || [];
@@ -186,6 +182,7 @@ export class QuestionStore implements IQuestionStore {
         // Notes is only for logged in users
         this.setNotes({ ...this.notes, data: userSnap.data().notes });
         this.setFavsForAllCategories(userSnap.data().favs, selectedCategory);
+        this.setAllFavorites(userSnap.data().favs);
         // this.updateFavs(userSnap.data().favs, SidebarItem.REACT, true);
       } else {
         this.setFilteredList(jsData);

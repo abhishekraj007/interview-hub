@@ -4,6 +4,7 @@ export interface Question {
   content: string[];
   bookmarked?: boolean;
   type?: string;
+  tags?: string[];
 }
 export interface User {
   id: string;
@@ -63,3 +64,33 @@ export enum AppTheme {
   LIGHT = "LIGHT",
   DARK = "DARK",
 }
+
+export const tags = [
+  "javascript",
+  "react",
+  "array",
+  "map",
+  "string",
+  "problem",
+  "math",
+  "linked_list",
+  "tree",
+  "matrix",
+  "sliding_window",
+  "memoization",
+];
+
+export const tagsLabel = {
+  javascript: "Javascript",
+  react: "React",
+  array: "Array",
+  map: "Map",
+  string: "String",
+  problem: "Problem",
+  math: "Math",
+  linked_list: "Linked List",
+  tree: "Tree",
+  matrix: "Matrix",
+  sliding_window: "Sliding Window",
+  memoization: "Memoization",
+};

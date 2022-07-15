@@ -12,11 +12,19 @@
 } */
 
 pre {
-  background-color: #142c43;
+  background-color: #142c43 !important;
   box-shadow: 2px 2px 3px 1px rgb(0 0 0 / 40%);
-  color: #fff;
-  padding: 1rem;
-  max-width: calc(100vw - 30px);
+  color: #fff !important;
+  padding: 1rem !important;
+  max-width: calc(100vw - 30px) !important;
+}
+
+code[class*="language-"] {
+  color: #fff !important;
+}
+
+.mce-content-body [data-mce-selected="inline-boundary"] {
+  background-color: #142c43 !important;
 }
 
 .content-area {
@@ -61,4 +69,12 @@ pre {
 
 .panel .ant-collapse-arrow {
   right: 0 !important;
+}
+
+.ant-tag-checkable {
+  user-select: none;
+}
+
+.ant-tag-checkable-checked {
+  background-color: #d719cd;
 }
