@@ -73,9 +73,7 @@ export const QuestionContainer = observer(() => {
       default:
         setFilteredList(javascript.data);
     }
-
-    setSelectedQuestion(undefined);
-  }, [selectedMenu]);
+  }, [selectedMenu, javascript, react, notes]);
 
   const onSearch = (value: string) => {
     searchQuestion(value, selectedMenu);

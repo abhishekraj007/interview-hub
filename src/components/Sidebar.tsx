@@ -14,9 +14,9 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const Sidebar = observer(() => {
   const {
-    menuStore: { setSelectedMenu },
+    menuStore: { setSelectedMenu, selectedMenu },
     authStore: { isLoggedIn },
-    questionStore: { javascript, react, notes, clearFilter },
+    questionStore: { javascript, react, notes, setSelectedQuestion },
   } = useContext(StoreContext);
 
   const [collapsed, setCollapsed] = useState(true);
@@ -93,6 +93,8 @@ const Sidebar = observer(() => {
 
   const onMenuSelect = (value) => {
     setSelectedMenu(value.key);
+    setSelectedQuestion(undefined);
+    // setSelectedMenu(SidebarItem.NOTES);
     // clearFilter(value.key);s
   };
 
@@ -113,6 +115,7 @@ const Sidebar = observer(() => {
         style={{ height: "100%", borderRight: 0 }}
         mode="inline"
         items={items}
+        selectedKeys={[selectedMenu]}
         onSelect={onMenuSelect}
       />
     </Sider>

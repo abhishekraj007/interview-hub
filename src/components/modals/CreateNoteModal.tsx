@@ -79,39 +79,29 @@ const CreateNoteModal = observer(({}: Props) => {
       };
 
       // Get data for selected category
-
       const { getMenuKey } = getCategoryKey(selectedMenu);
-
       const { data } = questionStore[getMenuKey];
-
       const indexOfQuestion = data.findIndex(
         (item) => item.id === selectedQuestion.id
       );
-
       const indexOfQuestionInFav = allFavorites.findIndex(
         (item) => item.id === selectedQuestion.id
       );
-
       if (indexOfQuestionInFav) {
         newFavs[indexOfQuestionInFav] = item;
         updateFavs = true;
       }
-
       data[indexOfQuestion] = item;
       newData = data;
-      setSelectedQuestion(item);
     }
 
     try {
       setIsMakingCall(true);
 
       // Which cat to update
-
       // Update favs for user as well if the edit one is favs
-
       if (isEdit) {
         const { getMenuKey, setMenuKey } = getCategoryKey(selectedMenu);
-
         const getter = questionStore[getMenuKey];
         const setter = questionStore[setMenuKey];
 
@@ -133,12 +123,14 @@ const CreateNoteModal = observer(({}: Props) => {
           // so update it
 
           // While updating a question make bookmark false for all question
-          newData = newData.map((question) => ({
+          const questionsWithoutBookmarked = newData.map((question) => ({
             ...question,
             bookmarked: false,
             tags: selectedTags,
           }));
-          await apiUpdateQuestions(getMenuKey, { data: newData });
+          await apiUpdateQuestions(getMenuKey, {
+            data: questionsWithoutBookmarked,
+          });
           if (updateFavs) {
             await apiUpdateUser(user.id, { favs: newFavs });
           }
@@ -147,6 +139,7 @@ const CreateNoteModal = observer(({}: Props) => {
         // It's a note
         // create or add new note
         await apiUpdateUser(user.id, { notes: newData });
+        setSelectedMenu(SidebarItem.NOTES);
 
         setNotes({
           ...notes,
@@ -154,15 +147,16 @@ const CreateNoteModal = observer(({}: Props) => {
         });
       }
 
+      setSelectedQuestion(item);
+
       message.success(
         isEdit ? "Successfully Edited!" : "Note created successfully!"
       );
       setShowNoteModal(false);
-      if (!isEdit) {
-        setSelectedMenu(SidebarItem.NOTES);
-      }
+
       setIsEdit(false);
       setTitle("");
+      setSelectedTags([]);
     } catch (error) {
       message.error("Something went wrong! Try again later.");
       console.log(error);
@@ -174,6 +168,7 @@ const CreateNoteModal = observer(({}: Props) => {
   useEffect(() => {
     console.log("hello lol");
     setTitle(isEdit ? selectedQuestion?.title : "");
+    setSelectedTags(isEdit ? selectedQuestion?.tags ?? [] : []);
 
     // form.setFieldsValue({
     //   title: "selectedQuestion?.title",
@@ -243,7 +238,7 @@ const CreateNoteModal = observer(({}: Props) => {
             {tags.map((tag) => (
               <CheckableTag
                 key={tag}
-                checked={selectedTags.indexOf(tag) > -1}
+                checked={selectedTags?.indexOf(tag) > -1}
                 onChange={(checked) => handleTagChange(tag, checked)}
               >
                 {tagsLabel[tag]}
