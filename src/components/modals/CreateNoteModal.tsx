@@ -237,10 +237,8 @@ const CreateNoteModal = observer(({}: Props) => {
             />
           </Col>
         </Row>
-        <Row style={{ marginBottom: 16 }}>
-          <Col span={3}>
-            <span>Categories:</span>
-          </Col>
+        <Row style={{ marginBottom: 16, flexFlow: "unset" }}>
+          <span style={{ marginRight: 8 }}>Categories:</span>
           <Col span={21}>
             {tags.map((tag) => (
               <CheckableTag
