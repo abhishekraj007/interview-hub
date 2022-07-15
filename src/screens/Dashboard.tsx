@@ -17,8 +17,6 @@ function Dashboard() {
     authStore: { checkUserLoggedInStatus, isLoggedIn },
   } = store;
 
-  console.log("store=>", store);
-
   const isItMobile = useDevices();
 
   useEffect(() => {

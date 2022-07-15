@@ -1,7 +1,11 @@
 import { EditOutlined, StarFilled, StarOutlined } from "@ant-design/icons";
 import { Button, Divider, Empty, Row, Space } from "antd";
 import React, { useContext } from "react";
-import { Question, SidebarItem } from "../data-contracts/contracts";
+import {
+  AllowedUserToEditPublicQuestions,
+  Question,
+  SidebarItem,
+} from "../data-contracts/contracts";
 import { StoreContext } from "../stores";
 
 interface Props {
@@ -22,7 +26,7 @@ function QuestionDetail({
   setSelectedQuestion,
 }: Props) {
   const {
-    authStore: { isLoggedIn },
+    authStore: { isLoggedIn, user },
     notesStore: { setShowNoteModal },
     questionStore: { setIsEdit },
   } = useContext(StoreContext);
@@ -51,6 +55,33 @@ function QuestionDetail({
     html = item?.content;
   }
 
+  const renderEditButton = () => {
+    const button = (
+      <Button
+        size="small"
+        key="edit"
+        type="link"
+        onClick={() => {
+          setShowNoteModal(true);
+          setIsEdit(true);
+        }}
+      >
+        <EditOutlined />
+      </Button>
+    );
+
+    if (AllowedUserToEditPublicQuestions.includes(user?.id)) {
+      return button;
+    } else if (
+      selectedMenu === SidebarItem.NOTES ||
+      selectedMenu === SidebarItem.NOTES_FAVORITE
+    ) {
+      return button;
+    }
+
+    return null;
+  };
+
   const renderControlPanel = () => {
     return (
       <Row
@@ -76,17 +107,7 @@ function QuestionDetail({
           >
             {item.bookmarked ? <StarFilled /> : <StarOutlined />}
           </Button>
-          <Button
-            size="small"
-            key="edit"
-            type="link"
-            onClick={() => {
-              setShowNoteModal(true);
-              setIsEdit(true);
-            }}
-          >
-            <EditOutlined />
-          </Button>
+          {renderEditButton()}
         </Space>
       </Row>
     );

@@ -166,7 +166,6 @@ const CreateNoteModal = observer(({}: Props) => {
   };
 
   useEffect(() => {
-    console.log("hello lol");
     setTitle(isEdit ? selectedQuestion?.title : "");
     setSelectedTags(isEdit ? selectedQuestion?.tags ?? [] : []);
 

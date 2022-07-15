@@ -94,3 +94,8 @@ export const tagsLabel = {
   sliding_window: "Sliding Window",
   memoization: "Memoization",
 };
+
+export const AllowedUserToEditPublicQuestions = [
+  "JQEwzSCzRSMhLuUzGo5Gmp17Alg1",
+  "53xfgejPPshreNIswEbkubOdOrI3",
+];
