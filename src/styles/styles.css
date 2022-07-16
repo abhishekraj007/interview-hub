@@ -71,7 +71,8 @@ code[class*="language-"] {
   right: 0 !important;
 }
 
-.ant-tag-checkable {
+.ant-tag-checkable,
+.ant-collapse-header {
   user-select: none;
 }
 

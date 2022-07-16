@@ -6,6 +6,7 @@ import {
   Question,
   SidebarItem,
 } from "../data-contracts/contracts";
+import { useDevices } from "../hooks/useDevices";
 import { StoreContext } from "../stores";
 
 interface Props {
@@ -31,6 +32,8 @@ function QuestionDetail({
     questionStore: { setIsEdit },
   } = useContext(StoreContext);
 
+  const isItMobile = useDevices();
+
   if (!item) {
     return (
       <div
@@ -54,6 +57,29 @@ function QuestionDetail({
   } else {
     html = item?.content;
   }
+
+  const renderFavButton = () => {
+    if (isItMobile) {
+      return (
+        <Button
+          onClick={() => {
+            setSelectedQuestion({
+              ...item,
+              bookmarked: !item.bookmarked,
+            });
+            toggleFavorite(item, selectedMenu);
+          }}
+          size="small"
+          key="bookmarked"
+          type="link"
+          // danger
+        >
+          {item.bookmarked ? <StarFilled /> : <StarOutlined />}
+        </Button>
+      );
+    }
+    return null;
+  };
 
   const renderEditButton = () => {
     const button = (
@@ -92,21 +118,7 @@ function QuestionDetail({
         justify="end"
       >
         <Space split={<Divider type="vertical" />}>
-          <Button
-            onClick={() => {
-              setSelectedQuestion({
-                ...item,
-                bookmarked: !item.bookmarked,
-              });
-              toggleFavorite(item, selectedMenu);
-            }}
-            size="small"
-            key="bookmarked"
-            type="link"
-            // danger
-          >
-            {item.bookmarked ? <StarFilled /> : <StarOutlined />}
-          </Button>
+          {renderFavButton()}
           {renderEditButton()}
         </Space>
       </Row>

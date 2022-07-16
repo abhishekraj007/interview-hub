@@ -34,9 +34,9 @@ const TinyEditor = forwardRef(({ initialValue }: EditorProps, ref) => {
         body_class: "tiny_editor",
         content_css: "dark",
         menubar: false,
-        plugins: "lists codesample fullscreen link",
+        plugins: "lists codesample fullscreen media link",
         toolbar:
-          "removeformat h1 h2 h3 bold italic underline codesample numlist bullist blockquote link fullscreen",
+          "removeformat h1 h2 h3 bold italic underline codesample numlist bullist blockquote media link fullscreen",
         width: "100%",
         height: "calc(100vh - 320px)",
         codesample_global_prismjs: true,

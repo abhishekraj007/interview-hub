@@ -76,6 +76,7 @@ export const QuestionContainer = observer(() => {
   }, [selectedMenu, javascript, react, notes]);
 
   const onSearch = (value: string) => {
+    setSelectedQuestion(undefined);
     searchQuestion(value, selectedMenu);
   };
 

@@ -43,7 +43,12 @@ function QuestionItem({
     }
 
     return (
-      <Collapse bordered={false} ghost expandIconPosition="end">
+      <Collapse
+        onChange={() => setSelectedQuestion(item)}
+        bordered={false}
+        ghost
+        expandIconPosition="end"
+      >
         <Panel
           style={{
             paddingLeft: 0,
@@ -73,12 +78,12 @@ function QuestionItem({
         //     : null,
         color: item?.id === selectedQuestion?.id ? colors.primary : null,
       }}
+      onClick={() => setSelectedQuestion(item)}
     >
       <span
         style={{
           flex: 1,
         }}
-        onClick={() => setSelectedQuestion(item)}
       >
         {`${index + 1}. ${item.title}`}
       </span>
