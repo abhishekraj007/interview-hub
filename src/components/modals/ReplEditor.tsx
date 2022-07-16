@@ -18,12 +18,13 @@ const ReplEditor = observer(() => {
     nodejs: "https://replit.com/@RobertJr/nodejs",
     html: "https://replit.com/@RobertJr/html",
     react: "https://replit.com/@RobertJr/react",
-    reactTypescript: "https://replit.com/@RobertJr/react-typescript",
+    react_typescript: "https://replit.com/@RobertJr/react-typescript",
   };
 
   const sandboxMap = new Map([
     ["sandbox_js", "agitated-bas-sdig4l"],
     ["sandbox_react", "dazzling-villani-9ukhg7"],
+    ["sandbox_react_typescript", "funny-burnell-11t7b6"],
   ]);
 
   const renderCodeType = () => {
@@ -44,7 +45,7 @@ const ReplEditor = observer(() => {
         </Title>
         <Select
           defaultValue={selectedEditorType}
-          style={{ width: 160 }}
+          style={{ width: isItMobile ? 160 : 260 }}
           onChange={(value) => setSelectedEditorType(value)}
         >
           <Option value="js">JS</Option>
@@ -53,7 +54,10 @@ const ReplEditor = observer(() => {
           <Option value="sandbox_react">React(Sandbox)</Option>
           <Option value="nodejs">NodeJs</Option>
           <Option value="html">HTML</Option>
-          <Option value="reactTypescript">React(TypeScript)</Option>
+          <Option value="react_typescript">React(TypeScript)</Option>
+          <Option value="sandbox_react_typescript">
+            React(TypeScript-Sandbox)
+          </Option>
         </Select>
       </div>
     );
