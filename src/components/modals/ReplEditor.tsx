@@ -14,11 +14,11 @@ const ReplEditor = observer(() => {
   const [selectedEditorType, setSelectedEditorType] = useState("js");
 
   const replSrc = {
-    js: "https://replit.com/@RobertJr/typescript",
-    nodejs: "https://replit.com/@RobertJr/nodejs",
-    html: "https://replit.com/@RobertJr/html",
-    react: "https://replit.com/@RobertJr/react",
-    react_typescript: "https://replit.com/@RobertJr/react-typescript",
+    js: "typescript",
+    nodejs: "nodejs",
+    html: "html",
+    react: "react",
+    react_typescript: "react-typescript",
   };
 
   const sandboxMap = new Map([
@@ -65,7 +65,7 @@ const ReplEditor = observer(() => {
 
   const equalPadding = isItMobile ? 8 : 24;
 
-  let src = `${replSrc[selectedEditorType]}?lite=true`;
+  let src = `https://replit.com/@RobertJr/${replSrc[selectedEditorType]}?lite=true`;
 
   if (sandboxMap.has(selectedEditorType)) {
     src = `https://codesandbox.io/embed/${sandboxMap.get(
