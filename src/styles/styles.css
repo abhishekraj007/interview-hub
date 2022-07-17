@@ -79,3 +79,8 @@ code[class*="language-"] {
 .ant-tag-checkable-checked {
   background-color: #d719cd;
 }
+
+ol,
+ul {
+  padding-left: 24px;
+}
