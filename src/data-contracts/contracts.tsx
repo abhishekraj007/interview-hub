@@ -99,3 +99,7 @@ export const AllowedUserToEditPublicQuestions = [
   "JQEwzSCzRSMhLuUzGo5Gmp17Alg1",
   "53xfgejPPshreNIswEbkubOdOrI3",
 ];
+
+export const GoogleAds = {
+  adClient: "ca-pub-6695906984875280",
+};

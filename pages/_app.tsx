@@ -6,19 +6,20 @@ import { StoreContext, useStore } from "../src/stores";
 import "../src/styles/my-theme.css";
 import "../src/styles/styles.css";
 
-// <script
-//   async
-//   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695906984875280"
-//   // @ts-ignore
-//   crossorigin="anonymous"
-// ></script>;
+{
+  /* <script
+  async
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695906984875280"
+  crossorigin="anonymous"
+></script>; */
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore(undefined);
 
   return (
     <StoreContext.Provider value={store}>
-      <Script
+      {/* <Script
         id="adsense-id"
         async
         onError={(e) => {
@@ -28,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695906984875280"
         // @ts-ignore
         crossorigin="anonymous"
-      />
+      /> */}
       <Component {...pageProps} />
     </StoreContext.Provider>
   );

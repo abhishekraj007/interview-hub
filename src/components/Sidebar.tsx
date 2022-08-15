@@ -8,6 +8,7 @@ import { IoLogoReact } from "@react-icons/all-files/io5/IoLogoReact";
 import { CgNotes } from "@react-icons/all-files/cg/CgNotes";
 import { useDevices } from "../hooks/useDevices";
 import { colors } from "../styles/theme";
+import Adsense from "./Adsense";
 const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -19,7 +20,7 @@ const Sidebar = observer(() => {
     questionStore: { javascript, react, notes, setSelectedQuestion },
   } = useContext(StoreContext);
 
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const isItMobile = useDevices();
 
   const label = (label, count) => {
@@ -94,8 +95,6 @@ const Sidebar = observer(() => {
   const onMenuSelect = (value) => {
     setSelectedMenu(value.key);
     setSelectedQuestion(undefined);
-    // setSelectedMenu(SidebarItem.NOTES);
-    // clearFilter(value.key);s
   };
 
   return (
@@ -111,13 +110,13 @@ const Sidebar = observer(() => {
       <Menu
         theme="light"
         defaultSelectedKeys={[SidebarItem.JAVASCRIPT]}
-        // defaultOpenKeys={[SidebarItem.JAVASCRIPT_ALL]}
         style={{ height: "100%", borderRight: 0 }}
         mode="inline"
         items={items}
         selectedKeys={[selectedMenu]}
         onSelect={onMenuSelect}
       />
+      <Adsense />
     </Sider>
   );
 });

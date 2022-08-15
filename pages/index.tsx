@@ -1,13 +1,9 @@
 import { ConfigProvider, Layout } from "antd";
 import Dashboard from "../src/screens/Dashboard";
 import { observer } from "mobx-react-lite";
-import { useContext } from "react";
-import { StoreContext } from "../src/stores";
 import Head from "next/head";
 
-const Home = (props) => {
-  const store = useContext(StoreContext);
-
+const Home = () => {
   return (
     <Layout>
       <Head>
