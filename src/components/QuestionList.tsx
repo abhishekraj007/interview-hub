@@ -1,7 +1,8 @@
-import { List } from "antd";
+import FilterOutlined from "@ant-design/icons/lib/icons/FilterOutlined";
+import { Button, Dropdown, List, Menu } from "antd";
 import Search from "antd/lib/input/Search";
 import React from "react";
-import { Question, SidebarItem } from "../data-contracts/contracts";
+import { Question, SidebarItem, tags } from "../data-contracts/contracts";
 import QuestionItem from "./QuestionItem";
 
 interface Props {
@@ -27,9 +28,30 @@ function QuestionList({
   selectedMenu,
   onSearch,
 }: Props) {
+  const filterMenu = (
+    <Menu
+      items={[
+        {
+          key: "array",
+          label: "Array",
+        },
+      ]}
+    />
+  );
+
   return (
     <>
-      <Search placeholder="Search" onSearch={onSearch} />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Search placeholder="Search" onSearch={onSearch} />
+        <Dropdown overlay={filterMenu} placement="bottomLeft" arrow>
+          <Button icon={<FilterOutlined />}></Button>
+        </Dropdown>
+      </div>
       <List
         style={{
           height: `calc(100vh - 142px)`,

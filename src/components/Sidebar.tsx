@@ -116,7 +116,7 @@ const Sidebar = observer(() => {
         selectedKeys={[selectedMenu]}
         onSelect={onMenuSelect}
       />
-      <Adsense />
+      {/* <Adsense /> */}
     </Sider>
   );
 });

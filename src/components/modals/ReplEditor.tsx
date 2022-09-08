@@ -11,7 +11,7 @@ const ReplEditor = observer(() => {
   const { notesStore } = useContext(StoreContext);
   const isItMobile = useDevices();
   const { showReplEditor, setShowReplEditor } = notesStore;
-  const [selectedEditorType, setSelectedEditorType] = useState("js");
+  const [selectedEditorType, setSelectedEditorType] = useState("sandbox_js");
 
   const replSrc = {
     js: "typescript",
