@@ -1,6 +1,6 @@
 import { Badge, Layout, Menu, MenuProps, Space } from "antd";
 import { observer } from "mobx-react-lite";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SidebarItem } from "../data-contracts/contracts";
 import { StoreContext } from "../stores";
 import { IoLogoJavascript } from "@react-icons/all-files/io5/IoLogoJavascript";
@@ -22,6 +22,12 @@ const Sidebar = observer(() => {
 
   const [collapsed, setCollapsed] = useState(false);
   const isItMobile = useDevices();
+
+  useEffect(() => {
+    isLoggedIn
+      ? setSelectedMenu(SidebarItem.NOTES)
+      : setSelectedMenu(SidebarItem.JAVASCRIPT);
+  }, [isLoggedIn]);
 
   const label = (label, count) => {
     return (
@@ -78,7 +84,7 @@ const Sidebar = observer(() => {
   ];
 
   if (isLoggedIn) {
-    items.push({
+    items.unshift({
       label: isLoggedIn ? "My Notes" : label("My Notes", notes?.data?.length),
       key: SidebarItem.NOTES_ALL,
       icon: <CgNotes />,
@@ -109,7 +115,9 @@ const Sidebar = observer(() => {
     >
       <Menu
         theme="light"
-        defaultSelectedKeys={[SidebarItem.JAVASCRIPT]}
+        defaultSelectedKeys={
+          isLoggedIn ? [SidebarItem.NOTES] : [SidebarItem.JAVASCRIPT]
+        }
         style={{ height: "100%", borderRight: 0 }}
         mode="inline"
         items={items}
