@@ -27,6 +27,8 @@ export const QuestionContainer = observer(() => {
       notes,
       selectedQuestion,
       setSelectedQuestion,
+      filterNotes,
+      clearFilter,
     },
   } = store;
 
@@ -110,6 +112,8 @@ export const QuestionContainer = observer(() => {
                   setSelectedQuestion={setSelectedQuestion}
                   toggleFavorite={onFavToggle}
                   onSearch={onSearch}
+                  filterNotes={filterNotes}
+                  clearFilter={clearFilter}
                 />
               </Col>
 

@@ -66,18 +66,22 @@ export enum AppTheme {
 }
 
 export const tags = [
+  "leetcode",
   "javascript",
   "react",
   "array",
   "map",
   "string",
-  "problem",
   "math",
   "linked_list",
   "tree",
   "matrix",
   "sliding_window",
   "memoization",
+  "two_pointer",
+  "stack",
+  "binary_search",
+  "graph",
 ];
 
 export const tagsLabel = {
@@ -86,13 +90,16 @@ export const tagsLabel = {
   array: "Array",
   map: "Map",
   string: "String",
-  problem: "Problem",
   math: "Math",
   linked_list: "Linked List",
   tree: "Tree",
   matrix: "Matrix",
   sliding_window: "Sliding Window",
   memoization: "Memoization",
+  leetcode: "Leetcode",
+  two_pointer: "Two Pointer",
+  binary_search: "Binary Search",
+  graph: "Graph",
 };
 
 export const AllowedUserToEditPublicQuestions = [

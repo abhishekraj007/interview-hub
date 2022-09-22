@@ -1,8 +1,15 @@
+import CheckOutlined from "@ant-design/icons/lib/icons/CheckOutlined";
+import ClearOutlined from "@ant-design/icons/lib/icons/ClearOutlined";
 import FilterOutlined from "@ant-design/icons/lib/icons/FilterOutlined";
-import { Button, Dropdown, List, Menu } from "antd";
+import { Button, Dropdown, List, Menu, MenuProps } from "antd";
 import Search from "antd/lib/input/Search";
-import React from "react";
-import { Question, SidebarItem, tags } from "../data-contracts/contracts";
+import React, { useMemo, useState } from "react";
+import {
+  Question,
+  SidebarItem,
+  tags,
+  tagsLabel,
+} from "../data-contracts/contracts";
 import QuestionItem from "./QuestionItem";
 
 interface Props {
@@ -17,6 +24,8 @@ interface Props {
   selectedQuestion: Question;
   selectedMenu: SidebarItem;
   onSearch: (value: string) => void;
+  filterNotes: (tag: string) => void;
+  clearFilter: (selectedCategory: SidebarItem) => void;
 }
 
 function QuestionList({
@@ -27,15 +36,53 @@ function QuestionList({
   toggleFavorite,
   selectedMenu,
   onSearch,
+  filterNotes,
+  clearFilter,
 }: Props) {
+  const [selectedFilterMenu, setSelectedFilterMenu] = useState("");
+  const onFilterMenuClick = (e) => {
+    const key = e.key;
+    setSelectedFilterMenu(key);
+
+    if (key === "clear") {
+      clearFilter(selectedMenu);
+    } else {
+      filterNotes(key);
+    }
+  };
+
+  const filterMenuItems = useMemo(() => {
+    const menus: MenuProps["items"] = tags.map((tag) => {
+      if (selectedFilterMenu === tag) {
+        return {
+          key: tag,
+          label: tagsLabel[tag],
+          icon: <CheckOutlined />,
+        };
+      }
+      return {
+        key: tag,
+        label: tagsLabel[tag],
+      };
+    });
+
+    if (selectedFilterMenu.length && selectedFilterMenu !== "clear") {
+      menus.unshift({
+        key: "clear",
+        label: "",
+        icon: <ClearOutlined />,
+      });
+    }
+
+    return menus;
+  }, [tags, selectedFilterMenu]);
+
   const filterMenu = (
     <Menu
-      items={[
-        {
-          key: "array",
-          label: "Array",
-        },
-      ]}
+      theme="dark"
+      onClick={onFilterMenuClick}
+      defaultSelectedKeys={[selectedFilterMenu]}
+      items={filterMenuItems}
     />
   );
 

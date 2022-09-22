@@ -31,7 +31,7 @@ export interface IQuestionStore {
     userId?: string
   ) => void;
   searchQuestion: (text: string, category?: SidebarItem) => void;
-  clearFilter: (selectedCategory) => void;
+  clearFilter: (selectedCategory: SidebarItem) => void;
   questions?: {
     js: IQModel;
     react: IQModel;
@@ -47,6 +47,7 @@ export interface IQuestionStore {
   setSelectedQuestion: (item: Question) => void;
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
+  filterNotes: (tag: string) => void;
 }
 
 export class QuestionStore implements IQuestionStore {
@@ -192,6 +193,14 @@ export class QuestionStore implements IQuestionStore {
     } finally {
       this.setIsLoading(false);
     }
+  };
+
+  filterNotes = (tag: string) => {
+    const filtered = this.notes.data.filter((q) => {
+      return q.tags?.includes(tag);
+    });
+
+    this.setFilteredList(filtered);
   };
 
   searchQuestion = (text: string, category?: SidebarItem) => {
