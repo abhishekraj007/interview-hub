@@ -3,7 +3,7 @@ import ClearOutlined from "@ant-design/icons/lib/icons/ClearOutlined";
 import FilterOutlined from "@ant-design/icons/lib/icons/FilterOutlined";
 import { Button, Dropdown, List, Menu, MenuProps } from "antd";
 import Search from "antd/lib/input/Search";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Question,
   SidebarItem,
@@ -46,10 +46,16 @@ function QuestionList({
 
     if (key === "clear") {
       clearFilter(selectedMenu);
+    } else if (key === "favorites") {
+      // show fav
     } else {
       filterNotes(key);
     }
   };
+
+  useEffect(() => {
+    setSelectedFilterMenu("");
+  }, [selectedMenu]);
 
   const filterMenuItems = useMemo(() => {
     const menus: MenuProps["items"] = tags.map((tag) => {
@@ -64,6 +70,11 @@ function QuestionList({
         key: tag,
         label: tagsLabel[tag],
       };
+    });
+
+    menus.unshift({
+      key: "favorites",
+      label: "Favorites",
     });
 
     if (selectedFilterMenu.length && selectedFilterMenu !== "clear") {

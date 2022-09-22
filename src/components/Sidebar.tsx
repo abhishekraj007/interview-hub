@@ -17,7 +17,13 @@ const Sidebar = observer(() => {
   const {
     menuStore: { setSelectedMenu, selectedMenu },
     authStore: { isLoggedIn },
-    questionStore: { javascript, react, notes, setSelectedQuestion },
+    questionStore: {
+      javascript,
+      react,
+      notes,
+      setSelectedQuestion,
+      clearFilter,
+    },
   } = useContext(StoreContext);
 
   const [collapsed, setCollapsed] = useState(false);
@@ -85,22 +91,16 @@ const Sidebar = observer(() => {
 
   if (isLoggedIn) {
     items.unshift({
-      label: isLoggedIn ? "My Notes" : label("My Notes", notes?.data?.length),
-      key: SidebarItem.NOTES_ALL,
+      label: label("Notes", notes?.data?.length),
+      key: SidebarItem.NOTES,
       icon: <CgNotes />,
-      children: [
-        { label: label("All", notes?.data?.length), key: SidebarItem.NOTES },
-        {
-          label: label("Favorites", notes?.favs?.length),
-          key: SidebarItem.NOTES_FAVORITE,
-        },
-      ],
     });
   }
 
   const onMenuSelect = (value) => {
     setSelectedMenu(value.key);
     setSelectedQuestion(undefined);
+    clearFilter(value.key);
   };
 
   return (
