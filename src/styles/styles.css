@@ -23,6 +23,16 @@ code[class*="language-"] {
   color: #fff !important;
 }
 
+p code {
+  color: #fff;
+  font-style: italic;
+}
+
+p code::before,
+p code::after {
+  content: "`";
+}
+
 .mce-content-body [data-mce-selected="inline-boundary"] {
   background-color: #142c43 !important;
 }
